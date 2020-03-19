@@ -1,28 +1,30 @@
 import React, { Component } from 'react';
 import RBCLogo from '../components/logos/RBCLogo';
 
-class Login extends Component {
+import { Link } from 'react-router-dom';
+
+class Splash extends Component {
 	state = {};
 	render() {
 		return (
-			<div className="auth">
+			<div className="splash">
 				<div class="wrapper">
 					<div class="authForm">
 						<div class="authFormLogo">
 							<RBCLogo />
 							<h1>Marketing Local Markets</h1>
-							{/* <p>
+							<p>
 								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
 								diam nonumy eirmod tempor.
-							</p> */}
+							</p>
 						</div>
 						<form class="authForm">
-							<input type="email" id="email" placeholder="Email Address" />
-							<input type="password" id="password" placeholder="Password" />
-							<button className="authBtn">Login</button>
-							<p class="authMessage">
-								<a href="#/login">Forgot your password?</a>
-							</p>
+							<Link to="/login" class="authBtn">
+								Login
+							</Link>
+							<Link to="/register" class="authBtn authBtnSecondary">
+								Register
+							</Link>
 						</form>
 					</div>
 				</div>
@@ -31,4 +33,4 @@ class Login extends Component {
 	}
 }
 
-export default Login;
+export default Splash;

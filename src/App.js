@@ -18,12 +18,13 @@ import Edit from './pages/Edit';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
 import ImageCapture from './pages/ImageCapture';
+import Splash from './pages/Splash';
 
 function App() {
 	return (
 		<div className="App">
 			<Router>
-				<Redirect from="/" exact to="/dashboard" />
+				<Route path="/" exact component={Splash} />
 
 				<Route path="/login" exact component={Login} />
 				<Route path="/register" exact component={Register} />

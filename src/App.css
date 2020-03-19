@@ -248,7 +248,7 @@ a {
 	align-items: center;
 }
 
-.RBCLogo {
+.header .RBCLogo {
 	height: 42.5px;
 	width: auto;
 	margin-right: 2.5rem;
@@ -393,4 +393,118 @@ a {
 .imagePreviewFullScreen > img {
 	width: 100vw;
 	height: auto;
+}
+
+/*                       */
+/* SPLASH/LOGIN/REGISTER */
+/*                       */
+
+.auth,
+.splash {
+	margin: auto;
+	background: #006ac3;
+	height: 100vh;
+}
+
+.auth .wrapper,
+.splash .wrapper {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.authForm {
+	color: #fff;
+}
+
+.authForm input {
+	outline: 0;
+	background: #fff;
+	width: 100%;
+	border: 0;
+	margin: 0 0 15px;
+	padding: 15px;
+	box-sizing: border-box;
+	font-size: 14px;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+}
+
+.authBtn {
+	text-transform: uppercase;
+	font-weight: 600;
+	outline: 0;
+	background: #fedf01;
+	width: 100%;
+	border: 0;
+	padding: 15px;
+	color: #000;
+	font-size: 14px;
+	transition: all 0.3 ease;
+	display: block;
+	text-align: center;
+}
+
+.authBtn:hover,
+.authBtn:active,
+.authBtn:focus {
+	background: #3281f7;
+}
+
+.authBtn:not(:first-child) {
+	margin-top: 1.5rem;
+}
+
+.authBtnSecondary {
+	background: #dbdbdb;
+}
+
+.authForm .authMessage {
+	margin: 15px 0 0;
+	color: #fff;
+	font-size: 1.4rem;
+	text-align: center;
+}
+
+.authForm .authMessage a {
+	color: #fff;
+	text-decoration: underline;
+}
+
+.authFormLogo {
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	margin-bottom: 2rem;
+}
+
+.authFormLogo .RBCLogo {
+	height: 10.5rem;
+	width: auto;
+	margin-left: 1rem;
+	margin-bottom: 3rem;
+}
+
+.authFormLogo img {
+	width: 15%;
+	margin-bottom: 1rem;
+}
+
+.authFormLogo h1 {
+	font-size: 2.6rem;
+	text-transform: capitalize;
+	margin-bottom: 1rem;
+}
+
+.splash .authFormLogo h1 {
+	margin-bottom: 2.5rem;
+}
+
+.authFormLogo p {
+	padding: 0 2rem;
 }
