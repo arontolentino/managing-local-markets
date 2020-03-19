@@ -17,6 +17,7 @@ import Submissions from './pages/Submissions';
 import Edit from './pages/Edit';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
+import ImageCapture from './pages/ImageCapture';
 
 function App() {
 	return (
@@ -31,6 +32,8 @@ function App() {
 
 				<Route path="/submit" exact component={Submit} />
 				<Route path="/submit/success" exact component={Success} />
+
+				<Route path="/camera" exact component={ImageCapture} />
 
 				<Route path="/submissions" exact component={Submissions} />
 				<Route path="/submissions/edit/:id" exact component={Edit} />

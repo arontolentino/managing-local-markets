@@ -6,6 +6,8 @@ import ArrowIcon from '../components/icons/ArrowIcon';
 import NotificationOptionIcon from '../components/icons/NotificationOptionIcon';
 import FolderOptionIcon from '../components/icons/FolderOptionIcon';
 
+import { Link } from 'react-router-dom';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen, faBell } from '@fortawesome/free-solid-svg-icons';
 
@@ -24,7 +26,10 @@ class Dashboard extends Component {
 					</div>
 
 					<div className="dashSubmit">
-						<SubmitIcon />
+						<Link to="/camera">
+							<SubmitIcon />
+						</Link>
+
 						<h3>Submit a new ad photo</h3>
 					</div>
 

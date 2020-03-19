@@ -369,3 +369,28 @@ a {
 .optionTitle h3 {
 	font-weight: 500;
 }
+
+.imagePreview {
+	position: relative;
+	text-align: center;
+}
+
+/*               */
+/* IMAGE CAPTURE */
+/*               */
+
+.imagePreview > img {
+	width: 100%;
+}
+
+@media (max-width: 768px) {
+	.imagePreview > img {
+		width: 100%;
+	}
+}
+
+/* fullscreen enable by props */
+.imagePreviewFullScreen > img {
+	width: 100vw;
+	height: auto;
+}
