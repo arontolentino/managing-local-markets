@@ -5,9 +5,10 @@ class GearIcon extends Component {
 		return (
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				width="28.024"
-				height="29.364"
+				width="auto"
+				height="28"
 				viewBox="0 0 28.024 29.364"
+				className="navIcon"
 			>
 				<g id="settings-1827737" transform="translate(0)">
 					<path

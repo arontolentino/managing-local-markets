@@ -11,24 +11,27 @@ import Success from './pages/Success';
 import Submissions from './pages/Submissions';
 import Edit from './pages/Edit';
 import Notifications from './pages/Notifications';
+import Settings from './pages/Settings';
 
 function App() {
 	return (
 		<div className="App">
 			<Router>
 				<Switch>
-					<Route to="/login" exact component={Login} />
-					<Route to="/register" exact component={Register} />
+					<Route path="/login" exact component={Login} />
+					<Route path="/register" exact component={Register} />
 
-					<Route to="/dashboard" exact component={Dashboard} />
+					<Route path="/dashboard" exact component={Dashboard} />
 
-					<Route to="/submit" exact component={Submit} />
-					<Route to="/submit/success" exact component={Success} />
+					<Route path="/submit" exact component={Submit} />
+					<Route path="/submit/success" exact component={Success} />
 
-					<Route to="/submissions" exact component={Submissions} />
-					<Route to="/submissions/edit/:id" exact component={Edit} />
+					<Route path="/submissions" exact component={Submissions} />
+					<Route path="/submissions/edit/:id" exact component={Edit} />
 
-					<Route to="/notifications" exact component={Notifications} />
+					<Route path="/notifications" exact component={Notifications} />
+
+					<Route path="/settings" exact component={Settings} />
 				</Switch>
 			</Router>
 		</div>

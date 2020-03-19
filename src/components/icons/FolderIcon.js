@@ -7,9 +7,10 @@ class FolderIcon extends Component {
 				id="Group_41"
 				data-name="Group 41"
 				xmlns="http://www.w3.org/2000/svg"
-				width="35.076"
-				height="26.314"
+				width="auto"
+				height="28"
 				viewBox="0 0 35.076 26.314"
+				className="navIcon"
 			>
 				<g id="folder-633700" transform="translate(0 0)">
 					<g id="Group_26" data-name="Group 26" transform="translate(0 5.847)">
