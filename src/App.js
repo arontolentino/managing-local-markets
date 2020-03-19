@@ -1,7 +1,12 @@
 import React from 'react';
 import './App.css';
 
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+	BrowserRouter as Router,
+	Switch,
+	Route,
+	Redirect
+} from 'react-router-dom';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -17,22 +22,22 @@ function App() {
 	return (
 		<div className="App">
 			<Router>
-				<Switch>
-					<Route path="/login" exact component={Login} />
-					<Route path="/register" exact component={Register} />
+				<Redirect from="/" exact to="/dashboard" />
 
-					<Route path="/dashboard" exact component={Dashboard} />
+				<Route path="/login" exact component={Login} />
+				<Route path="/register" exact component={Register} />
 
-					<Route path="/submit" exact component={Submit} />
-					<Route path="/submit/success" exact component={Success} />
+				<Route path="/dashboard" exact component={Dashboard} />
 
-					<Route path="/submissions" exact component={Submissions} />
-					<Route path="/submissions/edit/:id" exact component={Edit} />
+				<Route path="/submit" exact component={Submit} />
+				<Route path="/submit/success" exact component={Success} />
 
-					<Route path="/notifications" exact component={Notifications} />
+				<Route path="/submissions" exact component={Submissions} />
+				<Route path="/submissions/edit/:id" exact component={Edit} />
 
-					<Route path="/settings" exact component={Settings} />
-				</Switch>
+				<Route path="/notifications" exact component={Notifications} />
+
+				<Route path="/settings" exact component={Settings} />
 			</Router>
 		</div>
 	);

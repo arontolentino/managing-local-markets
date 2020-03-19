@@ -6,7 +6,7 @@ class CameraIcon extends Component {
 			<svg
 				id="camera-176359"
 				xmlns="http://www.w3.org/2000/svg"
-				width="ato"
+				width="auto"
 				height="28"
 				viewBox="0 0 37.553 26.6"
 				className="navIcon"

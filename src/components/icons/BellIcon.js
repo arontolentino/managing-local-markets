@@ -5,9 +5,8 @@ class BellIcon extends Component {
 		return (
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
-				width="26"
+				width="auto"
 				height="28"
-				viewBox="0 0 26 29.474"
 				className="navIcon"
 			>
 				<g id="notification-1827504" transform="translate(0 1)">

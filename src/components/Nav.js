@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 
 import { NavLink } from 'react-router-dom';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+	faCamera,
+	faFolderOpen,
+	faBell,
+	faCog
+} from '@fortawesome/free-solid-svg-icons';
+
 import CameraIcon from './icons/CameraIcon';
 import FolderIcon from './icons/FolderIcon';
 import BellIcon from './icons/BellIcon';
@@ -20,7 +28,7 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<CameraIcon />
+								<FontAwesomeIcon icon={faCamera} />
 								Take Photo
 							</NavLink>
 							<NavLink
@@ -28,15 +36,15 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<FolderIcon />
-								My Submissions
+								<FontAwesomeIcon icon={faFolderOpen} />
+								Submissions
 							</NavLink>
 							<NavLink
 								to="/notifications"
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<BellIcon />
+								<FontAwesomeIcon icon={faBell} />
 								Notifications
 							</NavLink>
 							<NavLink
@@ -44,7 +52,7 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<GearIcon />
+								<FontAwesomeIcon icon={faCog} />
 								Settings
 							</NavLink>
 						</ul>
