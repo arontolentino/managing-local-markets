@@ -26,7 +26,7 @@ class ImageCapture extends Component {
 					<Camera
 						onTakePhotoAnimationDone={this.handleTakePhotoAnimationDone}
 						isFullscreen={false}
-						// idealFacingMode={FACING_MODES.ENVIRONMENT}
+						idealFacingMode={FACING_MODES.ENVIRONMENT}
 						isImageMirror={false}
 					/>
 				)}

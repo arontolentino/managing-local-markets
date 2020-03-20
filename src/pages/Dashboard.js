@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
+
+import firebase from '../config/firebase';
+
 import Nav from '../components/Nav';
 import Header from '../components/Header';
 import SubmitIcon from '../components/icons/SubmitIcon';
 import ArrowIcon from '../components/icons/ArrowIcon';
-import NotificationOptionIcon from '../components/icons/NotificationOptionIcon';
-import FolderOptionIcon from '../components/icons/FolderOptionIcon';
+// import NotificationOptionIcon from '../components/icons/NotificationOptionIcon';
+// import FolderOptionIcon from '../components/icons/FolderOptionIcon';
 
 import { Link } from 'react-router-dom';
 
@@ -18,7 +21,7 @@ class Dashboard extends Component {
 				<Header />
 				<div className="page wrapper">
 					<div className="dashIntro">
-						<h2>Welcome Back, George...</h2>
+						<h2>Welcome Back, {this.props.firstName}...</h2>
 						<p>
 							Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
 							nonumy eirmod tempor

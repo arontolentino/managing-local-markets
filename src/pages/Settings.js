@@ -3,14 +3,23 @@ import Nav from '../components/Nav';
 
 import Header from './../components/Header';
 
+import firebase from '../config/firebase';
+
 class Settings extends Component {
 	state = {};
+
+	onLogOut = () => {
+		console.log('Clicked Logout');
+		firebase.auth().signOut();
+		this.props.history.push('/');
+	};
+
 	render() {
 		return (
 			<div className="settings">
 				<Header />
 				<div className="page wrapper">
-					<h1>Settings</h1>
+					<button onClick={this.onLogOut}>Sign out</button>
 				</div>
 				<Nav />
 			</div>

@@ -1,14 +1,73 @@
 import React, { Component } from 'react';
 import RBCLogo from '../components/logos/RBCLogo';
 
+import { withRouter } from 'react-router-dom';
+
+import firebase from '../config/firebase';
+
 class Register extends Component {
-	state = {};
+	state = {
+		user: null,
+		firstName: null,
+		lastName: null,
+		email: null,
+		password: null
+	};
+
+	// Register new user
+	onRegister = e => {
+		e.preventDefault();
+
+		this.registerUser();
+
+		// this.props.history.push('/dashboard');
+	};
+
+	onInputValueChange = e => {
+		this.setState({
+			[e.target.id]: e.target.value
+		});
+	};
+
+	registerUser = () => {
+		const auth = firebase.auth();
+		auth
+			.createUserWithEmailAndPassword(this.state.email, this.state.password)
+			.then(user => {
+				console.log('Created User!');
+
+				this.addUserDetails(user.user.uid);
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+
+	addUserDetails = uid => {
+		const db = firebase.firestore();
+
+		db.collection('users')
+			.doc(uid)
+			.set({
+				firstName: this.state.firstName,
+				lastName: this.state.lastName,
+				email: this.state.email
+			})
+			.then(() => {
+				console.log('Added user details!');
+				this.props.history.push('/dashboard');
+			})
+			.catch(error => {
+				console.log(error);
+			});
+	};
+
 	render() {
 		return (
 			<div className="auth">
-				<div class="wrapper">
-					<div class="authForm">
-						<div class="authFormLogo">
+				<div className="wrapper">
+					<div className="authForm">
+						<div className="authFormLogo">
 							<RBCLogo />
 							<h1>Marketing Local Markets</h1>
 							{/* <p>
@@ -16,12 +75,34 @@ class Register extends Component {
 								diam nonumy eirmod tempor.
 							</p> */}
 						</div>
-						<form class="authForm">
-							<input type="text" id="firstName" placeholder="First Name" />
-							<input type="text" id="lastName" placeholder="Last Name" />
-							<input type="email" id="email" placeholder="Email Address" />
-							<input type="password" id="password" placeholder="Password" />
-							<button className="authBtn">Register</button>
+						<form className="authForm">
+							<input
+								type="text"
+								id="firstName"
+								placeholder="First Name"
+								onChange={this.onInputValueChange}
+							/>
+							<input
+								type="text"
+								id="lastName"
+								placeholder="Last Name"
+								onChange={this.onInputValueChange}
+							/>
+							<input
+								type="email"
+								id="email"
+								placeholder="Email Address"
+								onChange={this.onInputValueChange}
+							/>
+							<input
+								type="password"
+								id="password"
+								placeholder="Password"
+								onChange={this.onInputValueChange}
+							/>
+							<button className="authBtn" onClick={this.onRegister}>
+								Register
+							</button>
 						</form>
 					</div>
 				</div>
@@ -30,4 +111,4 @@ class Register extends Component {
 	}
 }
 
-export default Register;
+export default withRouter(Register);

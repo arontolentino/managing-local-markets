@@ -2,9 +2,8 @@
 /* IMPORTS */
 /*         */
 
-@import (
-	'https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap'
-);
+/* prettier-ignore */
+@import ("https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap");
 
 /*       */
 /* SETUP */
@@ -410,6 +409,7 @@ a {
 .splash .wrapper {
 	display: flex;
 	align-items: center;
+	justify-content: center;
 	height: 100%;
 }
 

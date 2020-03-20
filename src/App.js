@@ -1,12 +1,9 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 
-import {
-	BrowserRouter as Router,
-	Switch,
-	Route,
-	Redirect
-} from 'react-router-dom';
+import firebase from './config/firebase';
+
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -20,31 +17,82 @@ import Settings from './pages/Settings';
 import ImageCapture from './pages/ImageCapture';
 import Splash from './pages/Splash';
 
-function App() {
-	return (
-		<div className="App">
-			<Router>
-				<Route path="/" exact component={Splash} />
+class App extends Component {
+	state = {
+		user: null,
 
-				<Route path="/login" exact component={Login} />
-				<Route path="/register" exact component={Register} />
+		userDetails: {}
+	};
 
-				<Route path="/dashboard" exact component={Dashboard} />
+	componentDidMount() {
+		this.initApp();
+	}
 
-				<Route path="/submit" exact component={Submit} />
-				<Route path="/submit/success" exact component={Success} />
+	initApp = () => {
+		const auth = firebase.auth();
 
-				<Route path="/camera" exact component={ImageCapture} />
+		// Firebase Auth listener
+		auth.onAuthStateChanged(user => {
+			if (user) {
+				this.setState({ user: user.uid }, () => {
+					this.getUserDetails();
+				});
+			}
+		});
+	};
 
-				<Route path="/submissions" exact component={Submissions} />
-				<Route path="/submissions/edit/:id" exact component={Edit} />
+	getUserDetails = () => {
+		const db = firebase.firestore();
 
-				<Route path="/notifications" exact component={Notifications} />
+		console.log(this.state.user);
 
-				<Route path="/settings" exact component={Settings} />
-			</Router>
-		</div>
-	);
+		db.collection('users')
+			.doc(this.state.user)
+			.get()
+			.then(doc => {
+				console.log(doc.data());
+				console.log('Got user details');
+
+				this.setState({ userDetails: doc.data() });
+			});
+	};
+
+	render() {
+		return (
+			<div className="App">
+				<Router>
+					<Route path="/" exact component={Splash} />
+
+					<Route path="/login" exact component={Login} />
+					<Route
+						path="/register"
+						exact
+						render={() => <Register user={this.state.user} />}
+					/>
+
+					<Route
+						path="/dashboard"
+						exact
+						render={() => (
+							<Dashboard firstName={this.state.userDetails.firstName} />
+						)}
+					/>
+
+					<Route path="/submit" exact component={Submit} />
+					<Route path="/submit/success" exact component={Success} />
+
+					<Route path="/camera" exact component={ImageCapture} />
+
+					<Route path="/submissions" exact component={Submissions} />
+					<Route path="/submissions/edit/:id" exact component={Edit} />
+
+					<Route path="/notifications" exact component={Notifications} />
+
+					<Route path="/settings" exact component={Settings} />
+				</Router>
+			</div>
+		);
+	}
 }
 
 export default App;

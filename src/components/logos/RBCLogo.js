@@ -25,7 +25,7 @@ class RBCLogo extends Component {
 														transform="translate(-335.353 -234.075)"
 														fill="#005ab4"
 														stroke="#fff"
-														stroke-width="2"
+														strokeWidth="2"
 													/>
 													<g
 														id="Group_3"
@@ -40,7 +40,7 @@ class RBCLogo extends Component {
 																transform="translate(-336.8 -232.4)"
 																fill="#fedf01"
 																stroke="#fff"
-																stroke-width="2"
+																strokeWidth="2"
 															/>
 															<path
 																id="Path_3"
@@ -49,7 +49,7 @@ class RBCLogo extends Component {
 																transform="translate(-336.797 -235.291)"
 																fill="#fedf01"
 																stroke="#fff"
-																stroke-width="2"
+																strokeWidth="2"
 															/>
 														</g>
 														<g
@@ -64,7 +64,7 @@ class RBCLogo extends Component {
 																transform="translate(-335.969 -258.093)"
 																fill="#fff"
 																stroke="#fff"
-																stroke-width="2"
+																strokeWidth="2"
 															/>
 															<path
 																id="Path_5"
@@ -73,7 +73,7 @@ class RBCLogo extends Component {
 																transform="translate(-337.929 -258.093)"
 																fill="#fff"
 																stroke="#fff"
-																stroke-width="2"
+																strokeWidth="2"
 															/>
 															<path
 																id="Path_6"
@@ -82,7 +82,7 @@ class RBCLogo extends Component {
 																transform="translate(-333.963 -258.119)"
 																fill="#fff"
 																stroke="#fff"
-																stroke-width="2"
+																strokeWidth="2"
 															/>
 														</g>
 													</g>

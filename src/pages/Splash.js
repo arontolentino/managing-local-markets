@@ -8,9 +8,9 @@ class Splash extends Component {
 	render() {
 		return (
 			<div className="splash">
-				<div class="wrapper">
-					<div class="authForm">
-						<div class="authFormLogo">
+				<div className="wrapper">
+					<div className="authForm">
+						<div className="authFormLogo">
 							<RBCLogo />
 							<h1>Marketing Local Markets</h1>
 							<p>
@@ -18,11 +18,11 @@ class Splash extends Component {
 								diam nonumy eirmod tempor.
 							</p>
 						</div>
-						<form class="authForm">
-							<Link to="/login" class="authBtn">
+						<form className="authForm">
+							<Link to="/login" className="authBtn">
 								Login
 							</Link>
-							<Link to="/register" class="authBtn authBtnSecondary">
+							<Link to="/register" className="authBtn authBtnSecondary">
 								Register
 							</Link>
 						</form>
