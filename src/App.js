@@ -93,7 +93,7 @@ class App extends Component {
 					exact
 					render={() => (
 						<Dashboard
-							name={this.state.userDetails.name}
+							firstName={this.state.userDetails.firstName}
 							onPhotoUpload={this.onPhotoUpload}
 						/>
 					)}

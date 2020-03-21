@@ -81,7 +81,8 @@ class Register extends Component {
 			.doc(uid)
 			.set({
 				uid: this.state.user,
-				name: this.state.firstName,
+				firstName: this.state.firstName,
+				lastName: this.state.lastName,
 				email: this.state.email,
 				transit: this.state.transit,
 				market: this.state.market,

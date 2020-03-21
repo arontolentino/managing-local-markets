@@ -32,23 +32,54 @@ class Submit extends Component {
 
 	onSubmit = e => {
 		e.preventDefault();
-
 		const storage = firebase.storage();
-
 		const submitImage = storage
-			.ref()
+			.ref('submissions')
 			.child(`${this.props.userDetails.uid}-${this.state.date.getTime()}`);
 
 		submitImage.put(this.props.photoFile).then(snapshot => {
 			console.log(snapshot);
 
 			submitImage.getDownloadURL().then(url => {
-				console.log(url);
-				this.setState({
-					photoURL: url
-				});
+				this.setState(
+					{
+						photoURL: url
+					},
+					() => {
+						this.addSubmission(url);
+					}
+				);
 			});
 		});
+	};
+
+	addSubmission = () => {
+		const db = firebase.firestore();
+
+		db.collection('submissions')
+			.add({
+				// User Details
+				uid: this.props.userDetails.uid,
+				firstName: this.props.userDetails.firstName,
+				lastName: this.props.userDetails.lastName,
+				transit: this.props.userDetails.transit,
+				market: this.props.userDetails.market,
+				region: this.props.userDetails.region,
+
+				// Submission Details
+				date: this.state.date,
+				photoURL: this.state.photoURL,
+				medium: this.state.medium,
+				product: this.state.product,
+				comment: this.state.comment
+			})
+			.then(() => {
+				console.log('Added submission!');
+				this.props.history.push('/dashboard');
+			})
+			.catch(error => {
+				console.log(error);
+			});
 	};
 
 	render() {

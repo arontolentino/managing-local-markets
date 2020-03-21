@@ -22,14 +22,14 @@ class Dashboard extends Component {
 			<div className="dash">
 				<Header>Marketing Local Markets</Header>
 
-				{!this.props.name ? (
+				{!this.props.firstName ? (
 					<div className="spinner">
 						<Spinner name="three-bounce" color="#006ac3" />
 					</div>
 				) : (
 					<div className="page wrapper">
 						<div className="dashIntro">
-							<h2>Welcome Back, {this.props.name}...</h2>
+							<h2>Welcome Back, {this.props.firstName}...</h2>
 							<p>
 								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
 								diam nonumy eirmod tempor
