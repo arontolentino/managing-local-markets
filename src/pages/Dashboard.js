@@ -18,7 +18,7 @@ class Dashboard extends Component {
 	render() {
 		return (
 			<div className="dash">
-				<Header />
+				<Header>Marketing Local Markets</Header>
 				<div className="page wrapper">
 					<div className="dashIntro">
 						<h2>Welcome Back, {this.props.firstName}...</h2>
@@ -29,11 +29,17 @@ class Dashboard extends Component {
 					</div>
 
 					<div className="dashSubmit">
-						<Link to="/camera">
+						<label for="photoUpload">
 							<SubmitIcon />
-						</Link>
+						</label>
 
 						<h3>Submit a new ad photo</h3>
+						<input
+							type="file"
+							id="photoUpload"
+							onchange="previewFile()"
+							onChange={e => this.props.onPhotoUpload(e)}
+						/>
 					</div>
 
 					<ul className="optionsContainer">

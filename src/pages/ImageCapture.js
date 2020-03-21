@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Camera, { FACING_MODES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 
-import ImagePreview from './../components/ImagePreview';
+import ImagePreview from './ImagePreview';
 
 class ImageCapture extends Component {
 	state = {
@@ -21,7 +21,7 @@ class ImageCapture extends Component {
 		return (
 			<div className="ImageCapture">
 				{this.state.dataUri ? (
-					<ImagePreview dataUri={this.state.dataUri} isFullscreen={false} />
+					<ImagePreview dataUri={this.state.dataUri} isFullscreen={true} />
 				) : (
 					<Camera
 						onTakePhotoAnimationDone={this.handleTakePhotoAnimationDone}

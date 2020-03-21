@@ -10,7 +10,7 @@ class Header extends Component {
 					<div className="headerlogo">
 						<RBCLogo />
 					</div>
-					<div className="headerTitle">Marketing Local Markets</div>
+					<div className="headerTitle">{this.props.children}</div>
 				</div>
 			</header>
 		);

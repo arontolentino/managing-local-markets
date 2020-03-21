@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+
+import { withRouter } from 'react-router-dom';
+
 import './App.css';
 
 import firebase from './config/firebase';
 
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -20,18 +23,37 @@ import Splash from './pages/Splash';
 class App extends Component {
 	state = {
 		user: null,
-
-		userDetails: {}
+		userDetails: {},
+		photoFile: null,
+		photoBase64: null
 	};
 
 	componentDidMount() {
 		this.initApp();
 	}
 
+	onPhotoUpload = e => {
+		const reader = new FileReader();
+		const file = e.target.files[0];
+
+		reader.onloadend = () => {
+			this.setState(
+				{
+					photoFile: file,
+					photoBase64: reader.result
+				},
+				() => {
+					this.props.history.push('/dashboard/submit');
+				}
+			);
+		};
+
+		reader.readAsDataURL(file);
+	};
+
 	initApp = () => {
 		const auth = firebase.auth();
 
-		// Firebase Auth listener
 		auth.onAuthStateChanged(user => {
 			if (user) {
 				this.setState({ user: user.uid }, () => {
@@ -44,15 +66,10 @@ class App extends Component {
 	getUserDetails = () => {
 		const db = firebase.firestore();
 
-		console.log(this.state.user);
-
 		db.collection('users')
 			.doc(this.state.user)
 			.get()
 			.then(doc => {
-				console.log(doc.data());
-				console.log('Got user details');
-
 				this.setState({ userDetails: doc.data() });
 			});
 	};
@@ -60,39 +77,49 @@ class App extends Component {
 	render() {
 		return (
 			<div className="App">
-				<Router>
-					<Route path="/" exact component={Splash} />
+				<Route path="/" exact component={Splash} />
 
-					<Route path="/login" exact component={Login} />
-					<Route
-						path="/register"
-						exact
-						render={() => <Register user={this.state.user} />}
-					/>
+				<Route path="/login" exact component={Login} />
+				<Route
+					path="/register"
+					exact
+					render={() => <Register user={this.state.user} />}
+				/>
 
-					<Route
-						path="/dashboard"
-						exact
-						render={() => (
-							<Dashboard firstName={this.state.userDetails.firstName} />
-						)}
-					/>
+				<Route
+					path="/dashboard"
+					exact
+					render={() => (
+						<Dashboard
+							firstName={this.state.userDetails.firstName}
+							onPhotoUpload={this.onPhotoUpload}
+						/>
+					)}
+				/>
 
-					<Route path="/submit" exact component={Submit} />
-					<Route path="/submit/success" exact component={Success} />
+				<Route
+					path="/dashboard/submit"
+					exact
+					render={() => (
+						<Submit
+							photoBase64={this.state.photoBase64}
+							userDetails={this.state.userDetails}
+						/>
+					)}
+				/>
+				<Route path="/dashboard/submit/success" exact component={Success} />
 
-					<Route path="/camera" exact component={ImageCapture} />
+				<Route path="/camera" exact component={ImageCapture} />
 
-					<Route path="/submissions" exact component={Submissions} />
-					<Route path="/submissions/edit/:id" exact component={Edit} />
+				<Route path="/submissions" exact component={Submissions} />
+				<Route path="/submissions/edit/:id" exact component={Edit} />
 
-					<Route path="/notifications" exact component={Notifications} />
+				<Route path="/notifications" exact component={Notifications} />
 
-					<Route path="/settings" exact component={Settings} />
-				</Router>
+				<Route path="/settings" exact component={Settings} />
 			</div>
 		);
 	}
 }
 
-export default App;
+export default withRouter(App);

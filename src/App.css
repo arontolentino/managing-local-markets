@@ -327,6 +327,10 @@ a {
 	margin-bottom: 3.2rem;
 }
 
+#photoUpload {
+	display: none;
+}
+
 .dashSubmit svg {
 	margin-bottom: 2rem;
 }
@@ -507,4 +511,88 @@ a {
 
 .authFormLogo p {
 	padding: 0 2rem;
+}
+
+/*        */
+/* SUBMIT */
+/*        */
+
+.submitForm {
+	display: flex;
+	flex-direction: column;
+}
+
+.photoPreview {
+	background: #e3f4ff;
+	border: 2px dashed #006ac3;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-o-border-radius: 5px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 3.2rem;
+}
+
+.photoPreview img {
+	max-width: 100%;
+	max-height: 50vh;
+}
+
+.submit .dashSubmit {
+	margin-bottom: 2rem;
+}
+
+.select {
+	background: linear-gradient(#fff, #efefef);
+	line-height: 1.3;
+	font-size: 1.6rem;
+	padding: 1.2rem 1rem;
+	box-sizing: border-box;
+	border: 1px solid #c4c4c4;
+	border-radius: 4px;
+	-webkit-appearance: none;
+	appearance: none;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+	margin-bottom: 1rem;
+}
+
+.comment {
+	padding: 1.2rem 1rem;
+	font-size: 1.6rem;
+	border: 1px solid #c4c4c4;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+}
+
+.submitBtns {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 2rem;
+}
+
+.submitBtn {
+	background: #006ac3;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: #fff;
+	border: none;
+	padding: 1.2rem 2.5rem;
+	text-transform: uppercase;
+}
+
+.cancelBtn {
+	border: 0;
+	background: none;
+	font-size: 1.5rem;
+	text-transform: uppercase;
+	color: #006ac3;
 }
