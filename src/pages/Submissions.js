@@ -8,7 +8,7 @@ class Submissions extends Component {
 	render() {
 		return (
 			<div className="submissions">
-				<Header />
+				<Header>Marketing Local Markets</Header>
 				<div className="page wrapper">
 					<h1>Submissions</h1>
 				</div>

@@ -603,3 +603,33 @@ a {
 	text-transform: uppercase;
 	color: #006ac3;
 }
+
+/*         */
+/* SUCCESS */
+/*         */
+
+.successMessage {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-transform: uppercase;
+	color: #006ac3;
+	margin: 3rem 0;
+}
+
+.successMessage h2 {
+	font-size: 3.3rem;
+	font-weight: 700;
+	margin: 1rem 0;
+}
+
+.successMessage svg {
+	font-size: 18rem;
+	margin-bottom: 2rem;
+}
+
+.successMessage p {
+	font-size: 2rem;
+	font-weight: 700;
+}

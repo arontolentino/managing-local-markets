@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 
 // import firebase from '../config/firebase';
 
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import SubmitIcon from '../components/icons/SubmitIcon';
+
+import Spinner from 'react-spinkit';
 
 import Nav from '../components/Nav';
 import Header from '../components/Header';
@@ -17,6 +19,7 @@ import firebase from '../config/firebase';
 
 class Submit extends Component {
 	state = {
+		isUploading: false,
 		date: new Date(),
 		financialInstitution: null,
 		product: null,
@@ -32,6 +35,9 @@ class Submit extends Component {
 
 	onSubmit = e => {
 		e.preventDefault();
+
+		this.setState({ isUploading: true });
+
 		const storage = firebase.storage();
 		const submitImage = storage
 			.ref('submissions')
@@ -75,7 +81,8 @@ class Submit extends Component {
 			})
 			.then(() => {
 				console.log('Added submission!');
-				this.props.history.push('/dashboard');
+				this.setState({ isUploading: false });
+				this.props.history.push('/dashboard/submit/success');
 			})
 			.catch(error => {
 				console.log(error);
@@ -86,61 +93,66 @@ class Submit extends Component {
 		return (
 			<div className="submit">
 				<Header>Photo Ad Submission</Header>
-				<div className="page wrapper">
-					<form className="submitForm">
-						<div className="photoPreview">
-							<img src={this.props.photoBase64} alt="" />
-						</div>
-						<select
-							className="select"
-							id="financialInstitution"
-							onChange={this.onValueChange}
-						>
-							<option value="" disabled selected>
-								Tag Financial Institution
-							</option>
-							<option value="ATB">ATB</option>
-							<option value="BMO">BMO</option>
-						</select>
-						<select
-							className="select"
-							id="product"
-							onChange={this.onValueChange}
-						>
-							<option value="" disabled selected>
-								Tag Product
-							</option>
-							<option value="Bank Accounts">Bank Accounts</option>
-							<option value="Credit Cards">Credit Cards</option>
-						</select>
-						<select
-							className="select"
-							id="medium"
-							onChange={this.onValueChange}
-						>
-							<option value="" disabled selected>
-								Tag Medium
-							</option>
-							<option value="Billboards">Billboards</option>
-							<option value="Online">Online</option>
-						</select>
 
-						<textarea
-							className="comment"
-							id="comment"
-							placeholder="Add Comment..."
-							onChange={this.onValueChange}
-						/>
-						<div className="submitBtns">
-							<button className="cancelBtn">Cancel</button>
-							<button className="submitBtn" onClick={this.onSubmit}>
-								Submit Ad
-							</button>
-						</div>
-					</form>
+				{this.state.isUploading === true ? (
+					<div className="spinner">
+						<Spinner name="three-bounce" color="#006ac3" />
+					</div>
+				) : (
+					<div className="page wrapper">
+						<form className="submitForm">
+							<div className="photoPreview">
+								<img src={this.props.photoBase64} alt="" />
+							</div>
+							<select
+								className="select"
+								id="financialInstitution"
+								onChange={this.onValueChange}
+							>
+								<option value="" disabled selected>
+									Tag Financial Institution
+								</option>
+								<option value="ATB">ATB</option>
+								<option value="BMO">BMO</option>
+							</select>
+							<select
+								className="select"
+								id="product"
+								onChange={this.onValueChange}
+							>
+								<option value="" disabled selected>
+									Tag Product
+								</option>
+								<option value="Bank Accounts">Bank Accounts</option>
+								<option value="Credit Cards">Credit Cards</option>
+							</select>
+							<select
+								className="select"
+								id="medium"
+								onChange={this.onValueChange}
+							>
+								<option value="" disabled selected>
+									Tag Medium
+								</option>
+								<option value="Billboards">Billboards</option>
+								<option value="Online">Online</option>
+							</select>
 
-					{/* <img src={this.state.photo.base64} alt="" /> */}
-				</div>
+							<textarea
+								className="comment"
+								id="comment"
+								placeholder="Add Comment..."
+								onChange={this.onValueChange}
+							/>
+							<div className="submitBtns">
+								<button className="cancelBtn">Cancel</button>
+								<button className="submitBtn" onClick={this.onSubmit}>
+									Submit Ad
+								</button>
+							</div>
+						</form>
+					</div>
+				)}
 
 				<Nav />
 			</div>
@@ -148,4 +160,4 @@ class Submit extends Component {
 	}
 }
 
-export default Submit;
+export default withRouter(Submit);
