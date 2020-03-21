@@ -23,7 +23,7 @@ import Splash from './pages/Splash';
 class App extends Component {
 	state = {
 		user: null,
-		userDetails: {},
+		userDetails: null,
 		photoFile: null,
 		photoBase64: null
 	};
@@ -31,6 +31,31 @@ class App extends Component {
 	componentDidMount() {
 		this.initApp();
 	}
+
+	auth = firebase.auth();
+	db = firebase.firestore();
+
+	initApp = () => {
+		this.auth.onAuthStateChanged(user => {
+			if (user) {
+				this.setState({ user: user.uid }, () => {
+					this.getUserDetails();
+				});
+			}
+		});
+	};
+
+	getUserDetails = () => {
+		this.db
+			.collection('users')
+			.doc(this.state.user)
+			.get()
+			.then(doc => {
+				this.setState({ userDetails: doc.data() });
+			});
+	};
+
+	// PHOTO UPLOAD
 
 	onPhotoUpload = e => {
 		const reader = new FileReader();
@@ -51,29 +76,6 @@ class App extends Component {
 		reader.readAsDataURL(file);
 	};
 
-	initApp = () => {
-		const auth = firebase.auth();
-
-		auth.onAuthStateChanged(user => {
-			if (user) {
-				this.setState({ user: user.uid }, () => {
-					this.getUserDetails();
-				});
-			}
-		});
-	};
-
-	getUserDetails = () => {
-		const db = firebase.firestore();
-
-		db.collection('users')
-			.doc(this.state.user)
-			.get()
-			.then(doc => {
-				this.setState({ userDetails: doc.data() });
-			});
-	};
-
 	render() {
 		return (
 			<div className="App">
@@ -83,7 +85,7 @@ class App extends Component {
 				<Route
 					path="/register"
 					exact
-					render={() => <Register user={this.state.user} />}
+					render={() => <Register onRegister={this.onRegister} />}
 				/>
 
 				<Route
@@ -91,7 +93,7 @@ class App extends Component {
 					exact
 					render={() => (
 						<Dashboard
-							firstName={this.state.userDetails.firstName}
+							name={this.state.userDetails.name}
 							onPhotoUpload={this.onPhotoUpload}
 						/>
 					)}

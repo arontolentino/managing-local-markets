@@ -11,47 +11,80 @@ class Register extends Component {
 		firstName: null,
 		lastName: null,
 		email: null,
-		password: null
+		password: null,
+		market: null,
+		region: null
 	};
 
-	// Register new user
-	onRegister = e => {
-		e.preventDefault();
+	// VARIABLES
+	db = firebase.firestore();
+	auth = firebase.auth();
 
-		this.registerUser();
-
-		// this.props.history.push('/dashboard');
-	};
-
+	// INPUT EVENT LISTENER
 	onInputValueChange = e => {
 		this.setState({
 			[e.target.id]: e.target.value
 		});
 	};
 
+	// REGISTER USER
+	onRegister = e => {
+		e.preventDefault();
+
+		// 1. Check if transit details are available
+		this.db
+			.collection('banks')
+			.where('transit', '==', parseInt(this.state.transit))
+			.get()
+			.then(querySnapshot => {
+				if (querySnapshot.empty) {
+					console.error('Entered transit number does not exist!!');
+				} else {
+					querySnapshot.forEach(doc => {
+						this.setState(
+							{
+								market: doc.data().market,
+								region: doc.data().region
+							},
+							() => {
+								this.registerUser();
+							}
+						);
+					});
+				}
+			});
+	};
+
+	// 2. Register user through Firebase Auth
 	registerUser = () => {
-		const auth = firebase.auth();
-		auth
+		this.auth
 			.createUserWithEmailAndPassword(this.state.email, this.state.password)
 			.then(user => {
-				console.log('Created User!');
-
-				this.addUserDetails(user.user.uid);
+				this.setState(
+					{
+						user: user.user.uid
+					},
+					() => {
+						this.addUserDetails(user.user.uid);
+					}
+				);
 			})
 			.catch(error => {
 				console.log(error);
 			});
 	};
 
+	// 3. Add additional user details after registration
 	addUserDetails = uid => {
-		const db = firebase.firestore();
-
-		db.collection('users')
+		this.db
+			.collection('users')
 			.doc(uid)
 			.set({
-				firstName: this.state.firstName,
-				lastName: this.state.lastName,
-				email: this.state.email
+				name: this.state.firstName,
+				email: this.state.email,
+				transit: this.state.transit,
+				market: this.state.market,
+				region: this.state.region
 			})
 			.then(() => {
 				console.log('Added user details!');
@@ -76,6 +109,12 @@ class Register extends Component {
 							</p> */}
 						</div>
 						<form className="authForm">
+							<input
+								type="text"
+								id="transit"
+								placeholder="Transit #"
+								onChange={this.onInputValueChange}
+							/>
 							<input
 								type="text"
 								id="firstName"

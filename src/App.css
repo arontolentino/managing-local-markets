@@ -228,6 +228,13 @@ a {
 	margin: 8rem 0 10rem 0;
 }
 
+.spinner {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 /*     */
 /* NAV */
 /*     */

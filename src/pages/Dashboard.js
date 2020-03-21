@@ -9,6 +9,8 @@ import ArrowIcon from '../components/icons/ArrowIcon';
 // import NotificationOptionIcon from '../components/icons/NotificationOptionIcon';
 // import FolderOptionIcon from '../components/icons/FolderOptionIcon';
 
+import Spinner from 'react-spinkit';
+
 import { Link } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -19,48 +21,55 @@ class Dashboard extends Component {
 		return (
 			<div className="dash">
 				<Header>Marketing Local Markets</Header>
-				<div className="page wrapper">
-					<div className="dashIntro">
-						<h2>Welcome Back, {this.props.firstName}...</h2>
-						<p>
-							Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-							nonumy eirmod tempor
-						</p>
+
+				{!this.props.name ? (
+					<div className="spinner">
+						<Spinner name="three-bounce" color="#006ac3" />
 					</div>
+				) : (
+					<div className="page wrapper">
+						<div className="dashIntro">
+							<h2>Welcome Back, {this.props.name}...</h2>
+							<p>
+								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
+								diam nonumy eirmod tempor
+							</p>
+						</div>
 
-					<div className="dashSubmit">
-						<label for="photoUpload">
-							<SubmitIcon />
-						</label>
+						<div className="dashSubmit">
+							<label for="photoUpload">
+								<SubmitIcon />
+							</label>
 
-						<h3>Submit a new ad photo</h3>
-						<input
-							type="file"
-							id="photoUpload"
-							onchange="previewFile()"
-							onChange={e => this.props.onPhotoUpload(e)}
-						/>
+							<h3>Submit a new ad photo</h3>
+							<input
+								type="file"
+								id="photoUpload"
+								onchange="previewFile()"
+								onChange={e => this.props.onPhotoUpload(e)}
+							/>
+						</div>
+
+						<ul className="optionsContainer">
+							<li className="option">
+								<div className="optionTitle">
+									<FontAwesomeIcon icon={faFolderOpen} />
+									<h3>View/Review My Submissions</h3>
+								</div>
+
+								<ArrowIcon />
+							</li>
+							<li className="option">
+								<div className="optionTitle">
+									<FontAwesomeIcon icon={faBell} />
+									<h3>You Have 3 Notifications</h3>
+								</div>
+
+								<ArrowIcon />
+							</li>
+						</ul>
 					</div>
-
-					<ul className="optionsContainer">
-						<li className="option">
-							<div className="optionTitle">
-								<FontAwesomeIcon icon={faFolderOpen} />
-								<h3>View/Review My Submissions</h3>
-							</div>
-
-							<ArrowIcon />
-						</li>
-						<li className="option">
-							<div className="optionTitle">
-								<FontAwesomeIcon icon={faBell} />
-								<h3>You Have 3 Notifications</h3>
-							</div>
-
-							<ArrowIcon />
-						</li>
-					</ul>
-				</div>
+				)}
 
 				<Nav />
 			</div>
