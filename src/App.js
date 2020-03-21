@@ -105,6 +105,7 @@ class App extends Component {
 					render={() => (
 						<Submit
 							photoBase64={this.state.photoBase64}
+							photoFile={this.state.photoFile}
 							userDetails={this.state.userDetails}
 						/>
 					)}

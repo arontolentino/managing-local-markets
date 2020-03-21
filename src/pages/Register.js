@@ -80,6 +80,7 @@ class Register extends Component {
 			.collection('users')
 			.doc(uid)
 			.set({
+				uid: this.state.user,
 				name: this.state.firstName,
 				email: this.state.email,
 				transit: this.state.transit,

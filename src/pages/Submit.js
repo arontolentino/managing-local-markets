@@ -13,10 +13,11 @@ import Header from '../components/Header';
 // import NotificationOptionIcon from '../components/icons/NotificationOptionIcon';
 // import FolderOptionIcon from '../components/icons/FolderOptionIcon';
 
-import FileBase64 from 'react-file-base64';
+import firebase from '../config/firebase';
 
 class Submit extends Component {
 	state = {
+		date: new Date(),
 		financialInstitution: null,
 		product: null,
 		medium: null,
@@ -26,6 +27,27 @@ class Submit extends Component {
 	onValueChange = e => {
 		this.setState({
 			[e.target.id]: e.target.value
+		});
+	};
+
+	onSubmit = e => {
+		e.preventDefault();
+
+		const storage = firebase.storage();
+
+		const submitImage = storage
+			.ref()
+			.child(`${this.props.userDetails.uid}-${this.state.date.getTime()}`);
+
+		submitImage.put(this.props.photoFile).then(snapshot => {
+			console.log(snapshot);
+
+			submitImage.getDownloadURL().then(url => {
+				console.log(url);
+				this.setState({
+					photoURL: url
+				});
+			});
 		});
 	};
 
@@ -80,7 +102,9 @@ class Submit extends Component {
 						/>
 						<div className="submitBtns">
 							<button className="cancelBtn">Cancel</button>
-							<button className="submitBtn">Submit Ad</button>
+							<button className="submitBtn" onClick={this.onSubmit}>
+								Submit Ad
+							</button>
 						</div>
 					</form>
 
