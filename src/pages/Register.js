@@ -104,7 +104,7 @@ class Register extends Component {
 					<div className="authForm">
 						<div className="authFormLogo">
 							<RBCLogo />
-							<h1>Marketing Local Markets</h1>
+							<h1>Managing Local Markets</h1>
 							{/* <p>
 								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
 								diam nonumy eirmod tempor.

@@ -20,7 +20,7 @@ class Dashboard extends Component {
 	render() {
 		return (
 			<div className="dash">
-				<Header>Marketing Local Markets</Header>
+				<Header>Managing Local Markets</Header>
 
 				{!this.props.firstName ? (
 					<div className="spinner">

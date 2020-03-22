@@ -9,7 +9,12 @@ import ArrowIcon from '../components/icons/ArrowIcon';
 import Spinner from 'react-spinkit';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faEdit } from '@fortawesome/free-solid-svg-icons';
+import {
+	faClock,
+	faEdit,
+	faFolderOpen
+} from '@fortawesome/free-solid-svg-icons';
+import SecondaryHeader from '../components/SecondaryHeader';
 
 class Submissions extends Component {
 	state = {
@@ -60,7 +65,11 @@ class Submissions extends Component {
 	render() {
 		return (
 			<div className="submissions">
-				<Header>Marketing Local Markets</Header>
+				<Header>Managing Local Markets</Header>
+				<SecondaryHeader>
+					<FontAwesomeIcon icon={faFolderOpen} />
+					<h2>My Submissions</h2>
+				</SecondaryHeader>
 
 				{!this.state.submissions ? (
 					<div className="spinner">

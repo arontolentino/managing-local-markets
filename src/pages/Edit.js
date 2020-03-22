@@ -1,9 +1,30 @@
 import React, { Component } from 'react';
 
+import firebase from '../config/firebase';
+
+import Header from './../components/Header';
+import SecondaryHeader from '../components/SecondaryHeader';
+import Nav from '../components/Nav';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+
 class Edit extends Component {
 	state = {};
+
 	render() {
-		return <h1>Edit</h1>;
+		return (
+			<div className="submissions">
+				<Header>Managing Local Markets</Header>
+				<SecondaryHeader>
+					<FontAwesomeIcon icon={faChevronLeft} />
+					<h2>Edit Submission</h2>
+				</SecondaryHeader>
+
+				<div className="page wrapper"></div>
+				<Nav />
+			</div>
+		);
 	}
 }
 

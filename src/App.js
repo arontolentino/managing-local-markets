@@ -17,7 +17,6 @@ import Submissions from './pages/Submissions';
 import Edit from './pages/Edit';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
-import ImageCapture from './pages/ImageCapture';
 import Splash from './pages/Splash';
 
 class App extends Component {
@@ -112,8 +111,6 @@ class App extends Component {
 					)}
 				/>
 				<Route path="/dashboard/submit/success" exact component={Success} />
-
-				<Route path="/camera" exact component={ImageCapture} />
 
 				<Route
 					path="/submissions"

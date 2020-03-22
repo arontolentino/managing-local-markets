@@ -17,7 +17,7 @@ class Settings extends Component {
 	render() {
 		return (
 			<div className="settings">
-				<Header>Marketing Local Markets</Header>
+				<Header>Managing Local Markets</Header>
 				<div className="page wrapper">
 					<button onClick={this.onLogOut}>Sign out</button>
 				</div>

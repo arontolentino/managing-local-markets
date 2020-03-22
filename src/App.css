@@ -235,9 +235,9 @@ a {
 	align-items: center;
 }
 
-/*     */
-/* NAV */
-/*     */
+/*        */
+/* HEADER */
+/*        */
 
 .header {
 	position: fixed;
@@ -264,6 +264,34 @@ a {
 	color: #fff;
 	font-size: 1.9rem;
 	font-weight: 700;
+}
+
+/*                  */
+/* SECONDARY HEADER */
+/*                  */
+
+.secondaryHeader {
+	padding: 1.2rem 0;
+	background: #e3f4ff;
+	position: fixed;
+	top: 6.55rem;
+	width: 100%;
+	display: block;
+	overflow: auto;
+}
+
+.secondaryHeader .wrapper {
+	display: flex;
+	align-items: center;
+}
+
+.secondaryHeader h2 {
+	font-size: 1.8rem;
+}
+
+.secondaryHeader svg {
+	font-size: 2rem;
+	margin-right: 2rem;
 }
 
 /*     */
@@ -638,6 +666,10 @@ a {
 /*             */
 /* SUBMISSIONS */
 /*             */
+
+.submissions .page {
+	margin-top: 11.5rem;
+}
 
 .submissions ul {
 	list-style: none;

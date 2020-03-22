@@ -8,7 +8,7 @@ class Notifications extends Component {
 	render() {
 		return (
 			<div className="notifications">
-				<Header>Marketing Local Markets</Header>
+				<Header>Managing Local Markets</Header>
 				<div className="page wrapper">
 					<h1>Notifications</h1>
 				</div>
