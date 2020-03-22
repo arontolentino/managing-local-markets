@@ -87,36 +87,6 @@ class Submissions extends Component {
 									<ArrowIcon />
 								</li>
 							))}
-
-							<li className="submission">
-								<div className="submissionContent">
-									<div className="submissionIcons">
-										<FontAwesomeIcon icon={faClock} />
-										<FontAwesomeIcon icon={faEdit} />
-									</div>
-									<div className="submissionDetails">
-										<img
-											src="https://www.bostonherald.com/wp-content/uploads/2019/03/tdbank-e1553248285353.jpg"
-											alt=""
-										/>
-										<div className="submissionTitle">
-											<p>2015-01-12</p>
-											<ul>
-												<li>
-													<h3>CIBC</h3>
-												</li>
-												<li>
-													<h3>Bank Accounts</h3>
-												</li>
-												<li>
-													<h3>Online</h3>
-												</li>
-											</ul>
-										</div>
-									</div>
-								</div>
-								<ArrowIcon />
-							</li>
 						</ul>
 					</div>
 				)}
