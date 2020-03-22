@@ -23,7 +23,7 @@ import Splash from './pages/Splash';
 class App extends Component {
 	state = {
 		user: null,
-		userDetails: null,
+		userDetails: { fistName: '' },
 		photoFile: null,
 		photoBase64: null
 	};

@@ -13,19 +13,33 @@ import { faClock, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 class Submissions extends Component {
 	state = {
+		user: null,
 		submissions: null
 	};
 
+	static getDerivedStateFromProps(props, state) {
+		if (props.user !== state.user) {
+			return {
+				user: props.user
+			};
+		}
+	}
+
 	componentDidMount() {
-		console.log(this.props.user);
 		this.getSubmissions();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.user !== prevProps.selected) {
+			this.getSubmissions();
+		}
 	}
 
 	getSubmissions = () => {
 		const db = firebase.firestore();
 
 		db.collection('submissions')
-			.where('uid', '==', this.props.user)
+			.where('uid', '==', this.state.user)
 			.onSnapshot(querySnapshot => {
 				const submissions = [];
 
