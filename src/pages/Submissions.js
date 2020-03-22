@@ -1,17 +1,126 @@
 import React, { Component } from 'react';
-import Nav from '../components/Nav';
 
+import firebase from '../config/firebase';
+
+import Nav from '../components/Nav';
 import Header from './../components/Header';
+import ArrowIcon from '../components/icons/ArrowIcon';
+
+import Spinner from 'react-spinkit';
+import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 class Submissions extends Component {
-	state = {};
+	state = {
+		submissions: null
+	};
+
+	componentDidMount() {
+		console.log(this.props.user);
+		this.getSubmissions();
+	}
+
+	getSubmissions = () => {
+		const db = firebase.firestore();
+
+		db.collection('submissions')
+			.where('uid', '==', this.props.user)
+			.onSnapshot(querySnapshot => {
+				const submissions = [];
+
+				querySnapshot.forEach(function(doc) {
+					submissions.push(doc.data());
+				});
+
+				if (submissions.length === 0) {
+					console.error('No submissions found!');
+				} else {
+					this.setState({
+						submissions
+					});
+				}
+			});
+	};
+
 	render() {
 		return (
 			<div className="submissions">
 				<Header>Marketing Local Markets</Header>
-				<div className="page wrapper">
-					<h1>Submissions</h1>
-				</div>
+
+				{!this.state.submissions ? (
+					<div className="spinner">
+						<Spinner name="three-bounce" color="#006ac3" />
+					</div>
+				) : (
+					<div className="page wrapper">
+						<ul className="submissionList">
+							{this.state.submissions.map(submission => (
+								<li className="submission">
+									<div className="submissionContent">
+										<div className="submissionIcons">
+											<FontAwesomeIcon icon={faClock} />
+											<FontAwesomeIcon icon={faEdit} />
+										</div>
+										<div className="submissionDetails">
+											<img src={submission.photoURL} alt="" />
+											<div className="submissionTitle">
+												<p>
+													{moment(
+														new Date(submission.date.seconds * 1000)
+													).format('MMMM D, YYYY | h:mm a')}
+												</p>
+												<ul>
+													<li>
+														<h3>{submission.financialInstitution}</h3>
+													</li>
+													<li>
+														<h3>{submission.product}</h3>
+													</li>
+													<li>
+														<h3>{submission.medium}</h3>
+													</li>
+												</ul>
+											</div>
+										</div>
+									</div>
+									<ArrowIcon />
+								</li>
+							))}
+
+							<li className="submission">
+								<div className="submissionContent">
+									<div className="submissionIcons">
+										<FontAwesomeIcon icon={faClock} />
+										<FontAwesomeIcon icon={faEdit} />
+									</div>
+									<div className="submissionDetails">
+										<img
+											src="https://www.bostonherald.com/wp-content/uploads/2019/03/tdbank-e1553248285353.jpg"
+											alt=""
+										/>
+										<div className="submissionTitle">
+											<p>2015-01-12</p>
+											<ul>
+												<li>
+													<h3>CIBC</h3>
+												</li>
+												<li>
+													<h3>Bank Accounts</h3>
+												</li>
+												<li>
+													<h3>Online</h3>
+												</li>
+											</ul>
+										</div>
+									</div>
+								</div>
+								<ArrowIcon />
+							</li>
+						</ul>
+					</div>
+				)}
+
 				<Nav />
 			</div>
 		);

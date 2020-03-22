@@ -34,18 +34,18 @@ class Success extends Component {
 
 					<ul className="optionsContainer">
 						<li className="option">
-							<div className="optionTitle">
+							<Link to="/dashboard/submit" className="optionTitle">
 								<FontAwesomeIcon icon={faFolderOpen} />
 								<h3>Submit Another Photo</h3>
-							</div>
+							</Link>
 
 							<ArrowIcon />
 						</li>
 						<li className="option">
-							<div className="optionTitle">
+							<Link to="/submissions" className="optionTitle">
 								<FontAwesomeIcon icon={faBell} />
 								<h3>See My Submissions</h3>
-							</div>
+							</Link>
 
 							<ArrowIcon />
 						</li>

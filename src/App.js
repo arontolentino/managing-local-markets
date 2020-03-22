@@ -107,6 +107,7 @@ class App extends Component {
 							photoBase64={this.state.photoBase64}
 							photoFile={this.state.photoFile}
 							userDetails={this.state.userDetails}
+							onPhotoUpload={this.onPhotoUpload}
 						/>
 					)}
 				/>
@@ -114,7 +115,11 @@ class App extends Component {
 
 				<Route path="/camera" exact component={ImageCapture} />
 
-				<Route path="/submissions" exact component={Submissions} />
+				<Route
+					path="/submissions"
+					exact
+					render={() => <Submissions user={this.state.user} />}
+				/>
 				<Route path="/submissions/edit/:id" exact component={Edit} />
 
 				<Route path="/notifications" exact component={Notifications} />

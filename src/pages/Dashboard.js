@@ -52,18 +52,18 @@ class Dashboard extends Component {
 
 						<ul className="optionsContainer">
 							<li className="option">
-								<div className="optionTitle">
+								<Link to="/submissions" className="optionTitle">
 									<FontAwesomeIcon icon={faFolderOpen} />
 									<h3>View/Review My Submissions</h3>
-								</div>
+								</Link>
 
 								<ArrowIcon />
 							</li>
 							<li className="option">
-								<div className="optionTitle">
+								<Link to="/notifications" className="optionTitle">
 									<FontAwesomeIcon icon={faBell} />
 									<h3>You Have 3 Notifications</h3>
-								</div>
+								</Link>
 
 								<ArrowIcon />
 							</li>
