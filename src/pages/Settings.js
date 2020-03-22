@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import firebase from '../config/firebase';
-
 import Header from './../components/Header';
 import SecondaryHeader from '../components/SecondaryHeader';
 import Nav from '../components/Nav';

@@ -1,18 +1,12 @@
 import React, { Component } from 'react';
-
-import firebase from '../config/firebase';
+import { Link } from 'react-router-dom';
 
 import Nav from '../components/Nav';
 import Header from '../components/Header';
 import SubmitIcon from '../components/icons/SubmitIcon';
 import ArrowIcon from '../components/icons/ArrowIcon';
-// import NotificationOptionIcon from '../components/icons/NotificationOptionIcon';
-// import FolderOptionIcon from '../components/icons/FolderOptionIcon';
 
 import Spinner from 'react-spinkit';
-
-import { Link } from 'react-router-dom';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen, faBell } from '@fortawesome/free-solid-svg-icons';
 

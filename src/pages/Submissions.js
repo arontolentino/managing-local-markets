@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import firebase from '../config/firebase';
-
 import Nav from '../components/Nav';
 import Header from './../components/Header';
+import SecondaryHeader from '../components/SecondaryHeader';
 import ArrowIcon from '../components/icons/ArrowIcon';
 
 import Spinner from 'react-spinkit';
+import firebase from '../config/firebase';
 import moment from 'moment';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -14,7 +14,6 @@ import {
 	faEdit,
 	faFolderOpen
 } from '@fortawesome/free-solid-svg-icons';
-import SecondaryHeader from '../components/SecondaryHeader';
 
 class Submissions extends Component {
 	state = {

@@ -10,11 +10,6 @@ import {
 	faCog
 } from '@fortawesome/free-solid-svg-icons';
 
-// import CameraIcon from './icons/CameraIcon';
-// import FolderIcon from './icons/FolderIcon';
-// import BellIcon from './icons/BellIcon';
-// import GearIcon from './icons/GearIcon';
-
 class Nav extends Component {
 	state = {};
 	render() {
