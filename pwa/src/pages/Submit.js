@@ -1,21 +1,14 @@
 import React, { Component } from 'react';
-
-// import firebase from '../config/firebase';
-
-import { Link, withRouter } from 'react-router-dom';
-
-import SubmitIcon from '../components/icons/SubmitIcon';
+import { withRouter } from 'react-router-dom';
 
 import Spinner from 'react-spinkit';
 
 import Nav from '../components/Nav';
 import Header from '../components/Header';
-// import SubmitIcon from '../components/icons/SubmitIcon';
-// import ArrowIcon from '../components/icons/ArrowIcon';
-// import NotificationOptionIcon from '../components/icons/NotificationOptionIcon';
-// import FolderOptionIcon from '../components/icons/FolderOptionIcon';
+import SubmitIcon from '../components/icons/SubmitIcon';
 
 import firebase from '../config/firebase';
+import imageCompression from 'browser-image-compression';
 
 class Submit extends Component {
 	state = {
@@ -30,6 +23,10 @@ class Submit extends Component {
 
 	componentDidMount() {
 		this.getCounter();
+
+		this.doSomething.then(function(res) {
+			console.log(res);
+		});
 	}
 
 	getCounter = () => {
@@ -56,33 +53,72 @@ class Submit extends Component {
 		});
 	};
 
+	doSomething = new Promise((resolve, reject) => {
+		setTimeout(function() {
+			resolve('Success!'); // Yay! Everything went well!
+		}, 250);
+	});
+
 	onSubmit = e => {
 		e.preventDefault();
 
+		// 1. Set state to uploading to trigger spinner
 		this.setState({ isUploading: true });
 
-		const storage = firebase.storage();
-		const submitImage = storage
-			.ref('submissions')
-			.child(`${this.props.userDetails.uid}-${this.state.date.getTime()}`);
+		// 2. Compress image to thumbnail size and web size
+		const photoFile = this.props.photoFile;
+		const thumbnailPhoto = imageCompression(photoFile, {
+			maxSizeMB: 0.1,
+			maxWidthOrHeight: 1024,
+			exifOrientation: 1
+		});
 
-		submitImage.put(this.props.photoFile).then(snapshot => {
-			console.log(snapshot);
+		const webPhoto = imageCompression(photoFile, {
+			maxSizeMB: 0.5,
+			maxWidthOrHeight: 2048,
+			exifOrientation: 1
+		});
 
-			submitImage.getDownloadURL().then(url => {
-				this.setState(
-					{
-						photoURL: url
-					},
-					() => {
-						this.addSubmission(url);
-					}
+		Promise.all([thumbnailPhoto, webPhoto]).then(compressedImages => {
+			console.log('First set of promises triggered');
+			console.log(compressedImages);
+
+			// 3. Upload compressed images to Firebase
+			const storage = firebase.storage();
+
+			const thumbnailPhotoRef = storage
+				.ref('submissions')
+				.child(
+					`${this.props.userDetails.uid}-${this.state.date.getTime()}-thumbnail`
 				);
+
+			const webPhotoRef = storage
+				.ref('submissions')
+				.child(
+					`${this.props.userDetails.uid}-${this.state.date.getTime()}-web`
+				);
+
+			// Upload thumbnail
+			const uploadThumbnailPhoto = thumbnailPhotoRef.put(compressedImages[0]);
+
+			// Upload web photo
+			const uploadWebPhoto = webPhotoRef.put(compressedImages[1]);
+
+			Promise.all([uploadThumbnailPhoto, uploadWebPhoto]).then(snapshots => {
+				console.log('Second set of promises triggered');
+
+				// 4. Get photo URLs
+				const thumbnailPhotoURL = thumbnailPhotoRef.getDownloadURL();
+				const webPhotoURL = webPhotoRef.getDownloadURL();
+
+				Promise.all([thumbnailPhotoURL, webPhotoURL]).then(URLs => {
+					this.addSubmission(URLs[0], URLs[1]);
+				});
 			});
 		});
 	};
 
-	addSubmission = () => {
+	addSubmission = (thumbnailPhotoURL, webPhotoURL) => {
 		const db = firebase.firestore();
 
 		db.collection('submissions')
@@ -100,7 +136,8 @@ class Submit extends Component {
 				// Submission Details
 				submissionID: this.state.counter,
 				date: this.state.date,
-				photoURL: this.state.photoURL,
+				photoURL: webPhotoURL,
+				thumbnailURL: thumbnailPhotoURL,
 				medium: this.state.medium,
 				product: this.state.product,
 				comment: this.state.comment,
@@ -109,7 +146,6 @@ class Submit extends Component {
 			})
 			.then(() => {
 				console.log('Added submission!');
-				this.setState({ isUploading: false });
 				this.updateCounter();
 				this.props.history.push('/dashboard/submit/success');
 			})
