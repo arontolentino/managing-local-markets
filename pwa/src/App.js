@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
-
-import { withRouter } from 'react-router-dom';
+import { withRouter, Route } from 'react-router-dom';
 
 import './App.css';
-
-import firebase from './config/firebase';
-
-import { Route } from 'react-router-dom';
 
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -18,6 +13,8 @@ import Edit from './pages/Edit';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
 import Splash from './pages/Splash';
+
+import firebase from './config/firebase';
 
 class App extends Component {
 	state = {

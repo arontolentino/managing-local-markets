@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Nav from '../components/Nav';
-import Header from './../components/Header';
+import Header from '../components/Header';
 import SecondaryHeader from '../components/SecondaryHeader';
 import ArrowIcon from '../components/icons/ArrowIcon';
 

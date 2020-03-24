@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-import Header from './../components/Header';
+import Header from '../components/Header';
 import SecondaryHeader from '../components/SecondaryHeader';
 import Nav from '../components/Nav';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 
-class Edit extends Component {
+class Notifications extends Component {
 	state = {};
 
 	render() {
@@ -15,8 +15,8 @@ class Edit extends Component {
 			<div className="submissions">
 				<Header>Managing Local Markets</Header>
 				<SecondaryHeader>
-					<FontAwesomeIcon icon={faChevronLeft} />
-					<h2>Edit Submission</h2>
+					<FontAwesomeIcon icon={faBell} />
+					<h2>Notifications</h2>
 				</SecondaryHeader>
 
 				<div className="page wrapper"></div>
@@ -26,4 +26,4 @@ class Edit extends Component {
 	}
 }
 
-export default Edit;
+export default Notifications;
