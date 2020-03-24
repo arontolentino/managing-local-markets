@@ -38,7 +38,7 @@ class Table extends Component {
 					}
 				},
 				{
-					dataField: 'photoURL',
+					dataField: 'thumbnailURL',
 					text: 'Image',
 					formatter: this.imageFormatter
 				},
