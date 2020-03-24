@@ -137,3 +137,10 @@ ul {
 .table td {
 	border-top: 1px solid #b2b2b2;
 }
+
+.tableImg {
+	object-fit: cover;
+	width: 100%;
+	max-height: 78px;
+	width: 105px;
+}

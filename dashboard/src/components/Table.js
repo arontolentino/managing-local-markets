@@ -14,19 +14,7 @@ class Table extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			products: [
-				{
-					id: 323,
-					name: 'test',
-					img: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg',
-					test: { test: 'test' }
-				},
-				{
-					id: 322,
-					name: 'test',
-					img: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Cat03.jpg'
-				}
-			],
+			submissions: [],
 			columns: [
 				{
 					dataField: 'submissionID',
@@ -121,12 +109,12 @@ class Table extends Component {
 				querySnapshot.forEach(function(doc) {
 					submissions.push(doc.data());
 				});
-				this.setState({ products: submissions });
+				this.setState({ submissions });
 			});
 	}
 
 	imageFormatter = (cell, row) => {
-		return <img style={{ width: 60 }} src={cell} alt="" />;
+		return <img class="tableImg" src={cell} alt="" />;
 	};
 
 	dateFormatter = (cell, row) => {
@@ -138,7 +126,7 @@ class Table extends Component {
 		return (
 			<BootstrapTable
 				keyField="id"
-				data={this.state.products}
+				data={this.state.submissions}
 				columns={this.state.columns}
 				bordered={false}
 				hover
