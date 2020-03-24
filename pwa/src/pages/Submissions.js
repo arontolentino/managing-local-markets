@@ -27,6 +27,7 @@ class Submissions extends Component {
 				user: props.user
 			};
 		}
+		return null;
 	}
 
 	componentDidMount() {
@@ -34,7 +35,6 @@ class Submissions extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		console.log(prevProps.user);
 		if (this.props.user !== prevProps.user) {
 			console.log('user updated!');
 			this.getSubmissions();
@@ -43,10 +43,10 @@ class Submissions extends Component {
 
 	getSubmissions = () => {
 		const db = firebase.firestore();
-		console.log('Fetched submissions!');
 
 		db.collection('submissions')
 			.where('userID', '==', this.state.user)
+			.orderBy('submissionID', 'desc')
 			.onSnapshot(querySnapshot => {
 				const submissions = [];
 
@@ -81,7 +81,7 @@ class Submissions extends Component {
 					<div className="page wrapper">
 						<ul className="submissionList">
 							{this.state.submissions.map(submission => (
-								<li className="submission">
+								<li className="submission" key={submission.submissionID}>
 									<div className="submissionContent">
 										<div className="submissionIcons">
 											<FontAwesomeIcon icon={faClock} />
