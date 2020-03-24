@@ -24,7 +24,30 @@ class Submit extends Component {
 		financialInstitution: null,
 		product: null,
 		medium: null,
-		comment: null
+		comment: null,
+		counter: null
+	};
+
+	componentDidMount() {
+		this.getCounter();
+	}
+
+	getCounter = () => {
+		const db = firebase.firestore();
+
+		db.collection('counter').onSnapshot(querySnapshot => {
+			querySnapshot.forEach(doc => {
+				this.setState({ counter: doc.data().counter });
+			});
+		});
+	};
+
+	updateCounter = () => {
+		const db = firebase.firestore();
+
+		db.collection('counter')
+			.doc('counter')
+			.update({ counter: this.state.counter + 1 });
 	};
 
 	onValueChange = e => {
@@ -63,9 +86,11 @@ class Submit extends Component {
 		const db = firebase.firestore();
 
 		db.collection('submissions')
-			.add({
+			.doc(this.state.counter.toString())
+			.set({
 				// User Details
-				uid: this.props.userDetails.uid,
+				userID: this.props.userDetails.uid,
+				fullName: this.props.userDetails.fullName,
 				firstName: this.props.userDetails.firstName,
 				lastName: this.props.userDetails.lastName,
 				transit: this.props.userDetails.transit,
@@ -73,16 +98,19 @@ class Submit extends Component {
 				region: this.props.userDetails.region,
 
 				// Submission Details
+				submissionID: this.state.counter,
 				date: this.state.date,
 				photoURL: this.state.photoURL,
 				medium: this.state.medium,
 				product: this.state.product,
 				comment: this.state.comment,
-				financialInstitution: this.state.financialInstitution
+				financialInstitution: this.state.financialInstitution,
+				status: 'Awaiting'
 			})
 			.then(() => {
 				console.log('Added submission!');
 				this.setState({ isUploading: false });
+				this.updateCounter();
 				this.props.history.push('/dashboard/submit/success');
 			})
 			.catch(error => {

@@ -34,16 +34,19 @@ class Submissions extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		if (this.props.user !== prevProps.selected) {
+		console.log(prevProps.user);
+		if (this.props.user !== prevProps.user) {
+			console.log('user updated!');
 			this.getSubmissions();
 		}
 	}
 
 	getSubmissions = () => {
 		const db = firebase.firestore();
+		console.log('Fetched submissions!');
 
 		db.collection('submissions')
-			.where('uid', '==', this.state.user)
+			.where('userID', '==', this.state.user)
 			.onSnapshot(querySnapshot => {
 				const submissions = [];
 
@@ -90,7 +93,7 @@ class Submissions extends Component {
 												<p>
 													{moment(
 														new Date(submission.date.seconds * 1000)
-													).format('MMMM D, YYYY | h:mm a')}
+													).format('YYYY-MM-DD | h:mm a')}
 												</p>
 												<ul>
 													<li>
