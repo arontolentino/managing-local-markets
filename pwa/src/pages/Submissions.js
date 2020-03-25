@@ -88,7 +88,7 @@ class Submissions extends Component {
 											<FontAwesomeIcon icon={faEdit} />
 										</div>
 										<div className="submissionDetails">
-											<img src={submission.photoURL} alt="" />
+											<img src={submission.thumbnailURL} alt="" />
 											<div className="submissionTitle">
 												<p>
 													{moment(

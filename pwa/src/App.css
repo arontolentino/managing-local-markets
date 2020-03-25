@@ -544,6 +544,36 @@ textarea:focus {
 	margin-right: 1.5rem;
 }
 
+/*               */
+/* SETTINGS */
+/*               */
+
+.settingsList {
+	padding-top: 3rem;
+}
+
+.settingsTitle {
+	margin-bottom: 1rem;
+	text-transform: uppercase;
+	font-weight: 400;
+	color: #006ac3;
+}
+
+.signOut {
+	font-weight: 500;
+	border: 0;
+	background: none;
+	font-size: 1.9rem;
+}
+
+.copyright {
+	margin-top: 2.5rem;
+}
+
+/*               */
+/* MEDIA QUERIES */
+/*               */
+
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
 	select:focus,
 	textarea:focus,
