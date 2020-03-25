@@ -65,54 +65,63 @@ class Submit extends Component {
 		// 1. Set state to uploading to trigger spinner
 		this.setState({ isUploading: true });
 
+		//
+
 		// 2. Compress image to thumbnail size and web size
 		const photoFile = this.props.photoFile;
-		const thumbnailPhoto = imageCompression(photoFile, {
-			maxSizeMB: 0.1,
-			maxWidthOrHeight: 1024,
-			exifOrientation: 6
-		});
 
-		const webPhoto = imageCompression(photoFile, {
-			maxSizeMB: 0.5,
-			maxWidthOrHeight: 2048,
-			exifOrientation: 6
-		});
+		imageCompression.getExifOrientation(photoFile).then(exif => {
+			console.log(exif);
 
-		Promise.all([thumbnailPhoto, webPhoto]).then(compressedImages => {
-			console.log('First set of promises triggered');
-			console.log(compressedImages);
+			const thumbnailPhoto = imageCompression(photoFile, {
+				maxSizeMB: 0.1,
+				maxWidthOrHeight: 1024,
+				exifOrientation: exif
+			});
 
-			// 3. Upload compressed images to Firebase
-			const storage = firebase.storage();
+			const webPhoto = imageCompression(photoFile, {
+				maxSizeMB: 0.5,
+				maxWidthOrHeight: 2048,
+				exifOrientation: exif
+			});
 
-			const thumbnailPhotoRef = storage
-				.ref('submissions')
-				.child(
-					`${this.props.userDetails.uid}-${this.state.date.getTime()}-thumbnail`
-				);
+			Promise.all([thumbnailPhoto, webPhoto]).then(compressedImages => {
+				console.log('First set of promises triggered');
+				console.log(compressedImages);
 
-			const webPhotoRef = storage
-				.ref('submissions')
-				.child(
-					`${this.props.userDetails.uid}-${this.state.date.getTime()}-web`
-				);
+				// 3. Upload compressed images to Firebase
+				const storage = firebase.storage();
 
-			// Upload thumbnail
-			const uploadThumbnailPhoto = thumbnailPhotoRef.put(compressedImages[0]);
+				const thumbnailPhotoRef = storage
+					.ref('submissions')
+					.child(
+						`${
+							this.props.userDetails.uid
+						}-${this.state.date.getTime()}-thumbnail`
+					);
 
-			// Upload web photo
-			const uploadWebPhoto = webPhotoRef.put(compressedImages[1]);
+				const webPhotoRef = storage
+					.ref('submissions')
+					.child(
+						`${this.props.userDetails.uid}-${this.state.date.getTime()}-web`
+					);
 
-			Promise.all([uploadThumbnailPhoto, uploadWebPhoto]).then(snapshots => {
-				console.log('Second set of promises triggered');
+				// Upload thumbnail
+				const uploadThumbnailPhoto = thumbnailPhotoRef.put(compressedImages[0]);
 
-				// 4. Get photo URLs
-				const thumbnailPhotoURL = thumbnailPhotoRef.getDownloadURL();
-				const webPhotoURL = webPhotoRef.getDownloadURL();
+				// Upload web photo
+				const uploadWebPhoto = webPhotoRef.put(compressedImages[1]);
 
-				Promise.all([thumbnailPhotoURL, webPhotoURL]).then(URLs => {
-					this.addSubmission(URLs[0], URLs[1]);
+				Promise.all([uploadThumbnailPhoto, uploadWebPhoto]).then(snapshots => {
+					console.log('Second set of promises triggered');
+
+					// 4. Get photo URLs
+					const thumbnailPhotoURL = thumbnailPhotoRef.getDownloadURL();
+					const webPhotoURL = webPhotoRef.getDownloadURL();
+
+					Promise.all([thumbnailPhotoURL, webPhotoURL]).then(URLs => {
+						this.addSubmission(URLs[0], URLs[1]);
+					});
 				});
 			});
 		});
