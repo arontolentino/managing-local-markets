@@ -70,13 +70,13 @@ class Submit extends Component {
 		const thumbnailPhoto = imageCompression(photoFile, {
 			maxSizeMB: 0.1,
 			maxWidthOrHeight: 1024,
-			exifOrientation: 1
+			exifOrientation: 6
 		});
 
 		const webPhoto = imageCompression(photoFile, {
 			maxSizeMB: 0.5,
 			maxWidthOrHeight: 2048,
-			exifOrientation: 1
+			exifOrientation: 6
 		});
 
 		Promise.all([thumbnailPhoto, webPhoto]).then(compressedImages => {
