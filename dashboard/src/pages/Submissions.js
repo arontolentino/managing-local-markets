@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 
-import firebase from '../components/config/firebase';
+import firebase from '../config/firebase';
 
 import Header from '../components/Header';
 import Table from '../components/Table';
+import Nav from '../components/Nav';
 
 class Submissions extends Component {
 	state = {};
@@ -25,7 +26,9 @@ class Submissions extends Component {
 	render() {
 		return (
 			<div className="submissions">
-				<Header />
+				<Header userEmail={this.props.userEmail} signOut={true}>
+					<Nav />
+				</Header>
 				<main class="main">
 					<div className="wrapper">
 						<Table />

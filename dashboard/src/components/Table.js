@@ -4,7 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { filter } from 'lodash';
 import { CSVLink } from 'react-csv';
 
-import firebase from './config/firebase';
+import firebase from '../config/firebase';
 import moment from 'moment';
 
 import 'bootstrap/dist/css/bootstrap.min.css';

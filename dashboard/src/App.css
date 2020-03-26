@@ -22,6 +22,10 @@ a {
 	text-decoration: none;
 }
 
+p {
+	margin-bottom: 0;
+}
+
 ul {
 	margin-bottom: 0;
 }
@@ -50,6 +54,7 @@ ul {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
+	align-items: center;
 }
 
 .headerTitle {
@@ -69,6 +74,31 @@ ul {
 	width: 75px;
 	position: absolute;
 }
+
+.headerAuth {
+	display: flex;
+	align-items: center;
+}
+
+.headerAuth p {
+	font-size: 1.4rem;
+	margin-right: 1rem;
+}
+
+.signOut {
+	background: none;
+	text-transform: uppercase;
+	border: none;
+	color: #fff;
+	font-weight: 600;
+	font-size: 1.4rem;
+	padding: 0 1rem;
+	border-left: 1px solid #fff;
+}
+
+/*     */
+/* NAV */
+/*     */
 
 .nav {
 	width: 100%;
@@ -93,13 +123,92 @@ ul {
 
 .navItem {
 	font-size: 1.3rem;
-	text-transform: uppercase;
 	display: block;
+	text-transform: uppercase;
+}
+
+.navItem:hover {
+	text-decoration: none;
+	color: #252525;
 }
 
 .navActive {
 	color: #252525;
 	border-bottom: 3px solid #006ac3;
+}
+
+/*       */
+/* LOGIN */
+/*       */
+
+.login .main .wrapper {
+	display: flex;
+	max-width: 100rem;
+	margin: 0 auto;
+	justify-content: space-between;
+	padding-top: 12rem;
+}
+
+.intro {
+	max-width: 40rem;
+}
+
+.intro h1 {
+	font-size: 2.4rem;
+	font-weight: 400;
+	color: #006ac3;
+}
+
+.intro h2 {
+	font-size: 4rem;
+	font-weight: 400;
+	margin-bottom: 4.5rem;
+	color: #006ac3;
+}
+
+.intro p {
+	font-size: 2rem;
+}
+
+.authForm {
+	display: flex;
+	flex-direction: column;
+}
+
+.authForm input {
+	width: 40rem;
+	padding: 1.5rem;
+	font-size: 1.6rem;
+	margin-bottom: 2rem;
+	border: 1px solid #707070;
+	border-radius: 4px;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	-ms-border-radius: 4px;
+	-o-border-radius: 4px;
+}
+
+.authForm button {
+	background: #fedf01;
+	padding: 1.5rem;
+	font-size: 1.6rem;
+	border: none;
+	transition: 0.2s ease-in;
+	-webkit-transition: 0.2s ease-in;
+	-moz-transition: 0.2s ease-in;
+	-ms-transition: 0.2s ease-in;
+	-o-transition: 0.2s ease-in;
+}
+
+.authForm button:hover {
+	background: #d8c111;
+}
+
+.authForm .authMessage a {
+	font-size: 1.6rem;
+	color: #006ac3;
+	display: block;
+	margin-bottom: 1.5rem;
 }
 
 /*       */
@@ -229,6 +338,10 @@ ul {
 		width: 100px;
 	} */
 }
+
+/*               */
+/* MEDIA QUERIES */
+/*               */
 
 @media only screen and (max-width: 425px) {
 	.navList li:not(:last-child) {
