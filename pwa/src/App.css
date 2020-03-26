@@ -98,7 +98,7 @@ textarea:focus {
 	padding: 1.2rem 0;
 	background: #e3f4ff;
 	position: fixed;
-	top: 6.55rem;
+	top: 6.5rem;
 	width: 100%;
 	display: block;
 	overflow: auto;
@@ -436,6 +436,7 @@ textarea:focus {
 .submitBtns {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	margin-top: 2rem;
 }
 
@@ -568,6 +569,27 @@ textarea:focus {
 
 .copyright {
 	margin-top: 2.5rem;
+}
+
+/*     	*/
+/* EDIT */
+/*      */
+
+.edit .page {
+	margin: 13rem 0 10rem 0;
+}
+
+.edit .photoPreview {
+	margin-bottom: 1.5rem;
+}
+
+.edit .retakeBtn {
+	margin-bottom: 1.5rem;
+	font-size: 1.4rem;
+	text-transform: uppercase;
+	border: none;
+	background: none;
+	color: #006ac3;
 }
 
 /*               */

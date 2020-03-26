@@ -71,7 +71,6 @@ class Submit extends Component {
 		const photoFile = this.props.photoFile;
 
 		imageCompression.getExifOrientation(photoFile).then(exif => {
-			console.log(exif);
 
 			const thumbnailPhoto = imageCompression(photoFile, {
 				maxSizeMB: 0.1,
@@ -189,7 +188,6 @@ class Submit extends Component {
 									<input
 										type="file"
 										id="photoUpload"
-										onchange="previewFile()"
 										onChange={e => this.props.onPhotoUpload(e)}
 									/>
 								</div>

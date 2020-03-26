@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Link } from 'react-router-dom';
+
 import Nav from '../components/Nav';
 import Header from '../components/Header';
 import SecondaryHeader from '../components/SecondaryHeader';
@@ -85,7 +87,9 @@ class Submissions extends Component {
 									<div className="submissionContent">
 										<div className="submissionIcons">
 											<FontAwesomeIcon icon={faClock} />
-											<FontAwesomeIcon icon={faEdit} />
+											<Link to={`/submissions/${submission.submissionID}/edit`}>
+												<FontAwesomeIcon icon={faEdit} />
+											</Link>
 										</div>
 										<div className="submissionDetails">
 											<img src={submission.thumbnailURL} alt="" />
@@ -109,7 +113,9 @@ class Submissions extends Component {
 											</div>
 										</div>
 									</div>
-									<ArrowIcon />
+									<Link to={`/submissions/${submission.submissionID}/edit`}>
+										<ArrowIcon />
+									</Link>
 								</li>
 							))}
 						</ul>

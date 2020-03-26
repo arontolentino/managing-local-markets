@@ -10,18 +10,21 @@ import Submit from './pages/Submit';
 import Success from './pages/Success';
 import Submissions from './pages/Submissions';
 import Edit from './pages/Edit';
+import View from './pages/View';
 import Notifications from './pages/Notifications';
 import Settings from './pages/Settings';
 import Splash from './pages/Splash';
 
 import firebase from './config/firebase';
+import EditSuccess from './pages/EditSuccess';
 
 class App extends Component {
 	state = {
 		user: null,
 		userDetails: { fistName: '' },
 		photoFile: null,
-		photoBase64: null
+		photoBase64: null,
+		selectedSubmission: {}
 	};
 
 	componentDidMount() {
@@ -52,7 +55,6 @@ class App extends Component {
 	};
 
 	// PHOTO UPLOAD
-
 	onPhotoUpload = e => {
 		const reader = new FileReader();
 		const file = e.target.files[0];
@@ -112,9 +114,28 @@ class App extends Component {
 				<Route
 					path="/submissions"
 					exact
-					render={() => <Submissions user={this.state.user} />}
+					render={() => (
+						<Submissions
+							user={this.state.user}
+							onSubmissionSelect={this.onSubmissionSelect}
+						/>
+					)}
 				/>
-				<Route path="/submissions/edit/:id" exact component={Edit} />
+
+				<Route path="/submissions/:id" exact render={() => <View />} />
+				<Route
+					path="/submissions/:id/edit"
+					exact
+					render={props => (
+						<Edit {...props} userDetails={this.state.userDetails} />
+					)}
+				/>
+
+				<Route
+					path="/submissions/:id/edit/success"
+					exact
+					component={EditSuccess}
+				/>
 
 				<Route path="/notifications" exact component={Notifications} />
 
