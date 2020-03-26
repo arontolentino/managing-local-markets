@@ -309,7 +309,11 @@ class Table extends Component {
 				</div>
 
 				<div className="tableExport">
-					<CSVLink data={this.state.submissions} headers={this.headers}>
+					<CSVLink
+						data={this.state.submissions}
+						headers={this.headers}
+						filename={'MLM-submissions.csv'}
+					>
 						Export to CSV
 					</CSVLink>
 				</div>
