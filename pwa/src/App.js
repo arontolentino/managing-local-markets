@@ -114,12 +114,7 @@ class App extends Component {
 				<Route
 					path="/submissions"
 					exact
-					render={() => (
-						<Submissions
-							user={this.state.user}
-							onSubmissionSelect={this.onSubmissionSelect}
-						/>
-					)}
+					render={() => <Submissions user={this.state.user} />}
 				/>
 
 				<Route path="/submissions/:id" exact render={() => <View />} />
@@ -137,7 +132,11 @@ class App extends Component {
 					component={EditSuccess}
 				/>
 
-				<Route path="/notifications" exact component={Notifications} />
+				<Route
+					path="/notifications"
+					exact
+					render={() => <Notifications user={this.state.user} />}
+				/>
 
 				<Route path="/settings" exact component={Settings} />
 			</div>

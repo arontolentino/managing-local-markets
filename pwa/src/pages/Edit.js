@@ -196,7 +196,7 @@ class Edit extends Component {
 							</div>
 
 							<label for="photoUpload">
-								<button className="retakeBtn">Retake Photo</button>
+								<p className="retakeBtn">Retake Photo</p>
 							</label>
 							<input
 								type="file"
