@@ -15,7 +15,6 @@ import {
 	faClock,
 	faEdit,
 	faBell,
-	faFolderOpen,
 	faExclamationCircle,
 	faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +40,6 @@ class Notifications extends Component {
 
 	componentDidUpdate(prevProps) {
 		if (this.props.user !== prevProps.user) {
-			console.log('user updated!');
 			this.getSubmissions();
 		}
 	}
@@ -60,9 +58,7 @@ class Notifications extends Component {
 					submissions.push(doc.data());
 				});
 
-				if (submissions.length === 0) {
-					console.error('No submissions found!');
-				} else {
+				if (submissions.length !== 0) {
 					this.setState({
 						submissions
 					});

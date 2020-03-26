@@ -71,7 +71,6 @@ class Submit extends Component {
 		const photoFile = this.props.photoFile;
 
 		imageCompression.getExifOrientation(photoFile).then(exif => {
-
 			const thumbnailPhoto = imageCompression(photoFile, {
 				maxSizeMB: 0.1,
 				maxWidthOrHeight: 1024,
@@ -271,7 +270,12 @@ class Submit extends Component {
 								onChange={this.onValueChange}
 							/>
 							<div className="submitBtns">
-								<button className="cancelBtn">Cancel</button>
+								<p
+									className="cancelBtn"
+									onClick={() => this.props.history.goBack()}
+								>
+									Cancel
+								</p>
 								<button className="submitBtn" onClick={this.onSubmit}>
 									Submit Ad
 								</button>

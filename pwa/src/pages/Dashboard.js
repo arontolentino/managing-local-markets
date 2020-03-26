@@ -31,7 +31,7 @@ class Dashboard extends Component {
 						</div>
 
 						<div className="dashSubmit">
-							<label for="photoUpload">
+							<label htmlFor="photoUpload">
 								<SubmitIcon />
 							</label>
 
@@ -39,7 +39,6 @@ class Dashboard extends Component {
 							<input
 								type="file"
 								id="photoUpload"
-								onchange="previewFile()"
 								onChange={e => this.props.onPhotoUpload(e)}
 							/>
 						</div>

@@ -38,7 +38,7 @@ class Settings extends Component {
 
 				<div className="page wrapper">
 					<div className="settingsList">
-						<h3 class="settingsTitle">Setting</h3>
+						<h3 className="settingsTitle">Setting</h3>
 						<ul className="optionsContainer">
 							<li className="option">
 								<Link to="/submissions" className="optionTitle">
@@ -57,7 +57,7 @@ class Settings extends Component {
 						</ul>
 					</div>
 					<div className="settingsList">
-						<h3 class="settingsTitle">Information</h3>
+						<h3 className="settingsTitle">Information</h3>
 						<ul className="optionsContainer">
 							<li className="option">
 								<Link to="/submissions" className="optionTitle">
@@ -76,10 +76,10 @@ class Settings extends Component {
 						</ul>
 					</div>
 					<div className="settingsList">
-						<button class="signOut" onClick={this.onSignOut}>
+						<button className="signOut" onClick={this.onSignOut}>
 							Sign Out
 						</button>
-						<p class="copyright">All rights reserved @ RBC 2020</p>
+						<p className="copyright">All rights reserved @ RBC 2020</p>
 					</div>
 				</div>
 				<Nav />

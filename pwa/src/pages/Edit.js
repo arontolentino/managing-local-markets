@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 
 import firebase from '../config/firebase';
 
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import Header from '../components/Header';
 import SecondaryHeader from '../components/SecondaryHeader';
 import Nav from '../components/Nav';
-import SubmitIcon from '../components/icons/SubmitIcon';
 
 import imageCompression from 'browser-image-compression';
 
@@ -171,9 +170,11 @@ class Edit extends Component {
 			<div className="edit">
 				<Header>Managing Local Markets</Header>
 				<SecondaryHeader>
-					<Link to="/submissions">
-						<FontAwesomeIcon icon={faChevronLeft} />
-					</Link>
+					<FontAwesomeIcon
+						icon={faChevronLeft}
+						onClick={() => this.props.history.goBack()}
+					/>
+
 					<h2>Edit Submission</h2>
 				</SecondaryHeader>
 
@@ -195,7 +196,7 @@ class Edit extends Component {
 								/>
 							</div>
 
-							<label for="photoUpload">
+							<label htmlFor="photoUpload">
 								<p className="retakeBtn">Retake Photo</p>
 							</label>
 							<input
@@ -286,9 +287,12 @@ class Edit extends Component {
 								value={this.state.submission.comment}
 							/>
 							<div className="submitBtns">
-								<Link to="/submissions" className="cancelBtn">
+								<p
+									className="cancelBtn"
+									onClick={() => this.props.history.goBack()}
+								>
 									Cancel
-								</Link>
+								</p>
 								<button className="submitBtn" onClick={this.onUpdate}>
 									Update Ad
 								</button>
@@ -303,4 +307,4 @@ class Edit extends Component {
 	}
 }
 
-export default Edit;
+export default withRouter(Edit);
