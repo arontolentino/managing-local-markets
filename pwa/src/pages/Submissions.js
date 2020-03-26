@@ -14,7 +14,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
 	faClock,
 	faEdit,
-	faFolderOpen
+	faFolderOpen,
+	faExclamationCircle,
+	faCheckCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 class Submissions extends Component {
@@ -66,6 +68,20 @@ class Submissions extends Component {
 			});
 	};
 
+	// renderStatusIcon = (status) => {
+
+	// 	if (status === 'Awaiting Status') {
+	// 		return <FontAwesomeIcon icon={faClock} />
+	// 	} else if (status === 'Approved') {
+	// 		return <FontAwesomeIcon icon={faCheckCircle} />
+	// 	} else {
+	// 		return <FontAwesomeIcon icon={faExclamationCircle}
+	// 	}
+	// 		{/* {submission.status === 'Awaiting Status' ? (
+	// 											<FontAwesomeIcon icon={faClock} />
+	// 										) : (submission.status === 'Action Required' ? <FontAwesomeIcon icon={faExclamationCircle} /> : (<FontAwesomeIcon icon={faCheckCircle} />))} */}
+	// }
+
 	render() {
 		return (
 			<div className="submissions">
@@ -86,9 +102,28 @@ class Submissions extends Component {
 								<li className="submission" key={submission.submissionID}>
 									<div className="submissionContent">
 										<div className="submissionIcons">
-											<FontAwesomeIcon icon={faClock} />
+											{submission.status === 'Awaiting' ? (
+												<FontAwesomeIcon
+													icon={faClock}
+													style={{ color: '#9B9B9B' }}
+												/>
+											) : submission.status === 'Action Required' ? (
+												<FontAwesomeIcon
+													icon={faExclamationCircle}
+													style={{ color: '#D10000' }}
+												/>
+											) : (
+												<FontAwesomeIcon
+													icon={faCheckCircle}
+													style={{ color: '#00A70D' }}
+												/>
+											)}
+
 											<Link to={`/submissions/${submission.submissionID}/edit`}>
-												<FontAwesomeIcon icon={faEdit} />
+												<FontAwesomeIcon
+													icon={faEdit}
+													style={{ color: '#9B9B9B' }}
+												/>
 											</Link>
 										</div>
 										<div className="submissionDetails">
