@@ -147,6 +147,8 @@ class Table extends Component {
 			});
 	}
 
+	statusFormatter = (cell, row) => {};
+
 	imageFormatter = (cell, row) => {
 		return <img class="tableImg" src={cell} alt="" />;
 	};

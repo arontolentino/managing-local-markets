@@ -500,11 +500,17 @@ textarea:focus {
 	list-style: none;
 }
 
-.submission {
+.submissionContainer {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 	padding: 2rem 0;
+}
+
+.submissionComment p {
+	padding-left: 3.5rem;
+	color: #d10000;
+	margin-bottom: 1.5rem;
 }
 
 .submission:not(:first-child) {

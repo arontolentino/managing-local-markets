@@ -100,57 +100,68 @@ class Submissions extends Component {
 						<ul className="submissionList">
 							{this.state.submissions.map(submission => (
 								<li className="submission" key={submission.submissionID}>
-									<div className="submissionContent">
-										<div className="submissionIcons">
-											{submission.status === 'Awaiting' ? (
-												<FontAwesomeIcon
-													icon={faClock}
-													style={{ color: '#9B9B9B' }}
-												/>
-											) : submission.status === 'Action Required' ? (
-												<FontAwesomeIcon
-													icon={faExclamationCircle}
-													style={{ color: '#D10000' }}
-												/>
-											) : (
-												<FontAwesomeIcon
-													icon={faCheckCircle}
-													style={{ color: '#00A70D' }}
-												/>
-											)}
+									<div className="submissionContainer">
+										{' '}
+										<div className="submissionContent">
+											<div className="submissionIcons">
+												{submission.status === 'Awaiting' ? (
+													<FontAwesomeIcon
+														icon={faClock}
+														style={{ color: '#9B9B9B' }}
+													/>
+												) : submission.status === 'Action Required' ? (
+													<FontAwesomeIcon
+														icon={faExclamationCircle}
+														style={{ color: '#D10000' }}
+													/>
+												) : (
+													<FontAwesomeIcon
+														icon={faCheckCircle}
+														style={{ color: '#00A70D' }}
+													/>
+												)}
 
-											<Link to={`/submissions/${submission.submissionID}/edit`}>
-												<FontAwesomeIcon
-													icon={faEdit}
-													style={{ color: '#9B9B9B' }}
-												/>
-											</Link>
-										</div>
-										<div className="submissionDetails">
-											<img src={submission.thumbnailURL} alt="" />
-											<div className="submissionTitle">
-												<p>
-													{moment(
-														new Date(submission.date.seconds * 1000)
-													).format('YYYY-MM-DD | h:mm a')}
-												</p>
-												<ul>
-													<li>
-														<h3>{submission.financialInstitution}</h3>
-													</li>
-													<li>
-														<h3>{submission.product}</h3>
-													</li>
-													<li>
-														<h3>{submission.medium}</h3>
-													</li>
-												</ul>
+												<Link
+													to={`/submissions/${submission.submissionID}/edit`}
+												>
+													<FontAwesomeIcon
+														icon={faEdit}
+														style={{ color: '#9B9B9B' }}
+													/>
+												</Link>
+											</div>
+											<div className="submissionDetails">
+												<img src={submission.thumbnailURL} alt="" />
+												<div className="submissionTitle">
+													<p>
+														{moment(
+															new Date(submission.date.seconds * 1000)
+														).format('YYYY-MM-DD | h:mm a')}
+													</p>
+													<ul>
+														<li>
+															<h3>{submission.financialInstitution}</h3>
+														</li>
+														<li>
+															<h3>{submission.product}</h3>
+														</li>
+														<li>
+															<h3>{submission.medium}</h3>
+														</li>
+													</ul>
+												</div>
 											</div>
 										</div>
+										<Link to={`/submissions/${submission.submissionID}/edit`}>
+											<ArrowIcon />
+										</Link>
 									</div>
-									<Link to={`/submissions/${submission.submissionID}/edit`}>
-										<ArrowIcon />
-									</Link>
+
+									{submission.adminComment !== undefined ? (
+										<div className="submissionComment">
+											<p>{submission.adminComment}</p>
+										</div>
+									) : null}
 								</li>
 							))}
 						</ul>
