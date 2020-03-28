@@ -16,6 +16,7 @@ class Table extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			selectedSubmission: {},
 			submissions: [],
 			columns: [
 				{
@@ -148,6 +149,56 @@ class Table extends Component {
 			});
 	}
 
+	onApproveAd = e => {
+		e.preventDefault();
+
+		const db = firebase.firestore();
+
+		db.collection('submissions')
+			.doc(this.state.selectedSubmission.submissionID.toString())
+			.set({
+				...this.state.selectedSubmission,
+				status: 'Approved',
+				adminComment: ''
+			});
+	};
+
+	onUpdateAd = e => {
+		e.preventDefault();
+
+		const db = firebase.firestore();
+
+		let status;
+
+		if (this.state.selectedSubmission.adminComment) {
+			status = 'Action Required';
+		} else {
+			status = 'Awaiting';
+		}
+
+		db.collection('submissions')
+			.doc(this.state.selectedSubmission.submissionID.toString())
+			.set({
+				...this.state.selectedSubmission,
+				status: status
+			});
+	};
+
+	onExpandInputChange = e => {
+		this.setState({
+			selectedSubmission: {
+				...this.state.selectedSubmission,
+				[e.target.id]: e.target.value
+			}
+		});
+	};
+
+	onSelectChange = e => {
+		this.setState({
+			filters: { ...this.state.filters, [e.target.id]: e.target.value }
+		});
+	};
+
 	statusFormatter = (cell, row) => {
 		if (cell === 'Action Required') {
 			return <p style={{ color: '#D10000', fontWeight: '600' }}>{cell}</p>;
@@ -199,12 +250,7 @@ class Table extends Component {
 		return <p>{moment(new Date(cell * 1000)).format('YYYY-MM-DD h:mm a')}</p>;
 	};
 
-	onSelectChange = e => {
-		this.setState({
-			filters: { ...this.state.filters, [e.target.id]: e.target.value }
-		});
-	};
-
+	// CSV export headers
 	headers = [
 		{ label: 'ID', key: 'submissionID' },
 		{ label: 'User', key: 'fullName' },
@@ -224,7 +270,6 @@ class Table extends Component {
 	expandRow = {
 		onlyOneExpanding: true,
 		renderer: row => {
-			console.log(row);
 			return (
 				<div className="expand">
 					<div className="expandHeader">
@@ -250,6 +295,7 @@ class Table extends Component {
 										id="region"
 										defaultValue={row.region}
 										className="expandSelect"
+										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
 										{this.state.selectOptions.regions.map(option => (
@@ -263,9 +309,10 @@ class Table extends Component {
 								<div class="expandInput">
 									<h4>Market:</h4>
 									<select
-										id="regional"
+										id="market"
 										defaultValue={row.market}
 										className="expandSelect"
+										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
 										{this.state.selectOptions.markets.map(option => (
@@ -282,6 +329,7 @@ class Table extends Component {
 										id="transit"
 										defaultValue={row.transit}
 										className="expandSelect"
+										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
 										{this.state.selectOptions.transits.map(option => (
@@ -293,11 +341,12 @@ class Table extends Component {
 								</div>
 
 								<div class="expandInput">
-									<h4>Market:</h4>
+									<h4>Institution:</h4>
 									<select
 										id="financialInstitution"
 										defaultValue={row.financialInstitution}
 										className="expandSelect"
+										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
 										{this.state.selectOptions.financialInstitutions.map(
@@ -316,6 +365,7 @@ class Table extends Component {
 										id="product"
 										defaultValue={row.product}
 										className="expandSelect"
+										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
 										{this.state.selectOptions.products.map(option => (
@@ -332,6 +382,7 @@ class Table extends Component {
 										id="medium"
 										defaultValue={row.medium}
 										className="expandSelect"
+										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
 										{this.state.selectOptions.medium.map(option => (
@@ -349,6 +400,7 @@ class Table extends Component {
 										id="comment"
 										className="expandTextArea"
 										defaultValue={row.comment}
+										onChange={this.onExpandInputChange}
 									></textarea>
 								</div>
 
@@ -356,10 +408,11 @@ class Table extends Component {
 									<h4>Admin Note:</h4>
 									<div class="adminNote">
 										<textarea
-											name="comment"
-											id="comment"
+											name="adminComment"
+											id="adminComment"
 											className="expandTextArea"
 											defaultValue={row.adminComment}
+											onChange={this.onExpandInputChange}
 										></textarea>
 										<p>
 											Adding an admin note will automatically update the
@@ -369,14 +422,37 @@ class Table extends Component {
 								</div>
 
 								<div className="expandBtns">
-									<button className="updateBtn">Update Ad</button>
-									<button className="approveBtn">Approve Ad</button>
+									<button className="updateBtn" onClick={this.onUpdateAd}>
+										Update Ad
+									</button>
+									<button className="approveBtn" onClick={this.onApproveAd}>
+										Approve Ad
+									</button>
 								</div>
 							</form>
 						</div>
 					</div>
 				</div>
 			);
+		},
+		showExpandColumn: true,
+		expandColumnPosition: 'right',
+		onExpand: (row, isExpand, rowIndex, e) => {
+			setTimeout(() => {
+				this.setState({ selectedSubmission: row });
+			}, 50);
+		},
+		expandHeaderColumnRenderer: ({ isAnyExpands }) => {
+			if (isAnyExpands) {
+				return <b>Actions</b>;
+			}
+			return <b>Actions</b>;
+		},
+		expandColumnRenderer: ({ expanded }) => {
+			if (expanded) {
+				return <b style={{ color: 'rgb(209, 0, 0)' }}>Close</b>;
+			}
+			return <b>View</b>;
 		}
 	};
 

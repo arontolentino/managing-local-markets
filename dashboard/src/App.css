@@ -338,6 +338,10 @@ ul {
 	padding: 0;
 }
 
+.react-bootstrap-table th[data-row-selection] {
+	width: 70px;
+}
+
 .expandHeader {
 	padding: 1.5rem 1.5rem;
 	background: #006ac3;
