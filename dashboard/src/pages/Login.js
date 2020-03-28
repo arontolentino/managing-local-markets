@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import firebase from '../config/firebase';
 
 import Header from '../components/Header';
-import Table from '../components/Table';
 
 class Login extends Component {
 	state = {};

@@ -7,7 +7,6 @@ import { CSVLink } from 'react-csv';
 import firebase from '../config/firebase';
 import moment from 'moment';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -104,10 +103,12 @@ class Table extends Component {
 				{
 					dataField: 'status',
 					text: 'Status',
+					formatter: this.statusFormatter,
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
+					headerStyle: { width: '100px' }
 				}
 			],
 			selectOptions: {
@@ -147,10 +148,30 @@ class Table extends Component {
 			});
 	}
 
-	statusFormatter = (cell, row) => {};
+	statusFormatter = (cell, row) => {
+		if (cell === 'Action Required') {
+			return <p style={{ color: '#D10000', fontWeight: '600' }}>{cell}</p>;
+		} else if (cell === 'Approved') {
+			return <p style={{ color: '#00A70D', fontWeight: '600' }}>{cell}</p>;
+		} else {
+			return <p>{cell}</p>;
+		}
+	};
 
 	imageFormatter = (cell, row) => {
-		return <img class="tableImg" src={cell} alt="" />;
+		return <img className="tableImg" src={cell} alt="" />;
+	};
+
+	actionFormatter = (cell, row) => {
+		return (
+			<button
+				onClick={() => {
+					this.props.onSubmissionSelect(row);
+				}}
+			>
+				View/Edit
+			</button>
+		);
 	};
 
 	filterSubmissions = () => {
@@ -200,6 +221,165 @@ class Table extends Component {
 		{ label: 'Status', key: 'status' }
 	];
 
+	expandRow = {
+		onlyOneExpanding: true,
+		renderer: row => {
+			console.log(row);
+			return (
+				<div className="expand">
+					<div className="expandHeader">
+						<h3>Updating Ad</h3>
+					</div>
+
+					<div className="expandContent">
+						<div className="expandImageContainer">
+							<img src={row.photoURL} alt=""></img>
+						</div>
+
+						<div className="expandForm">
+							<form>
+								<div class="expandInput">
+									<h4>Status:</h4>
+
+									<p>{row.status}</p>
+								</div>
+
+								<div class="expandInput">
+									<h4>Region:</h4>
+									<select
+										id="region"
+										defaultValue={row.region}
+										className="expandSelect"
+									>
+										<option value=""></option>
+										{this.state.selectOptions.regions.map(option => (
+											<option value={option} key={option}>
+												{option}
+											</option>
+										))}
+									</select>
+								</div>
+
+								<div class="expandInput">
+									<h4>Market:</h4>
+									<select
+										id="regional"
+										defaultValue={row.market}
+										className="expandSelect"
+									>
+										<option value=""></option>
+										{this.state.selectOptions.markets.map(option => (
+											<option value={option} key={option}>
+												{option}
+											</option>
+										))}
+									</select>
+								</div>
+
+								<div class="expandInput">
+									<h4>Transit:</h4>
+									<select
+										id="transit"
+										defaultValue={row.transit}
+										className="expandSelect"
+									>
+										<option value=""></option>
+										{this.state.selectOptions.transits.map(option => (
+											<option value={option} key={option}>
+												{option}
+											</option>
+										))}
+									</select>
+								</div>
+
+								<div class="expandInput">
+									<h4>Market:</h4>
+									<select
+										id="financialInstitution"
+										defaultValue={row.financialInstitution}
+										className="expandSelect"
+									>
+										<option value=""></option>
+										{this.state.selectOptions.financialInstitutions.map(
+											option => (
+												<option value={option} key={option}>
+													{option}
+												</option>
+											)
+										)}
+									</select>
+								</div>
+
+								<div class="expandInput">
+									<h4>Product:</h4>
+									<select
+										id="product"
+										defaultValue={row.product}
+										className="expandSelect"
+									>
+										<option value=""></option>
+										{this.state.selectOptions.products.map(option => (
+											<option value={option} key={option}>
+												{option}
+											</option>
+										))}
+									</select>
+								</div>
+
+								<div class="expandInput">
+									<h4>Medium:</h4>
+									<select
+										id="medium"
+										defaultValue={row.medium}
+										className="expandSelect"
+									>
+										<option value=""></option>
+										{this.state.selectOptions.medium.map(option => (
+											<option value={option} key={option}>
+												{option}
+											</option>
+										))}
+									</select>
+								</div>
+
+								<div class="expandInput textArea">
+									<h4>Comment:</h4>
+									<textarea
+										name="comment"
+										id="comment"
+										className="expandTextArea"
+										defaultValue={row.comment}
+									></textarea>
+								</div>
+
+								<div class="expandInput textArea">
+									<h4>Admin Note:</h4>
+									<div class="adminNote">
+										<textarea
+											name="comment"
+											id="comment"
+											className="expandTextArea"
+											defaultValue={row.adminComment}
+										></textarea>
+										<p>
+											Adding an admin note will automatically update the
+											submission status to “Action Required”.
+										</p>
+									</div>
+								</div>
+
+								<div className="expandBtns">
+									<button className="updateBtn">Update Ad</button>
+									<button className="approveBtn">Approve Ad</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			);
+		}
+	};
+
 	render() {
 		return (
 			<div>
@@ -212,9 +392,7 @@ class Table extends Component {
 								id="region"
 								onChange={this.onSelectChange}
 							>
-								<option value="" selected>
-									All
-								</option>
+								<option value="">All</option>
 								{this.state.selectOptions.regions.map(region => (
 									<option value={region}>{region}</option>
 								))}
@@ -227,9 +405,7 @@ class Table extends Component {
 								id="market"
 								onChange={this.onSelectChange}
 							>
-								<option value="" selected>
-									All
-								</option>
+								<option value="">All</option>
 								{this.state.selectOptions.markets.map(market => (
 									<option value={market}>{market}</option>
 								))}
@@ -242,9 +418,7 @@ class Table extends Component {
 								id="financialInstitution"
 								onChange={this.onSelectChange}
 							>
-								<option value="" selected>
-									All
-								</option>
+								<option value="">All</option>
 								{this.state.selectOptions.financialInstitutions.map(
 									financialInstitution => (
 										<option value={financialInstitution}>
@@ -261,9 +435,7 @@ class Table extends Component {
 								id="product"
 								onChange={this.onSelectChange}
 							>
-								<option value="" selected>
-									All
-								</option>
+								<option value="">All</option>
 								{this.state.selectOptions.products.map(product => (
 									<option value={product}>{product}</option>
 								))}
@@ -276,9 +448,7 @@ class Table extends Component {
 								id="medium"
 								onChange={this.onSelectChange}
 							>
-								<option value="" selected>
-									All
-								</option>
+								<option value="">All</option>
 								{this.state.selectOptions.medium.map(medium => (
 									<option value={medium}>{medium}</option>
 								))}
@@ -291,9 +461,7 @@ class Table extends Component {
 								id="transit"
 								onChange={this.onSelectChange}
 							>
-								<option value="" selected>
-									All
-								</option>
+								<option value="">All</option>
 								{this.state.selectOptions.transits.map(transit => (
 									<option value={transit}>{transit}</option>
 								))}
@@ -321,7 +489,7 @@ class Table extends Component {
 				</div>
 
 				<BootstrapTable
-					keyField="id"
+					keyField="submissionID"
 					data={
 						this.state.filteredSubmissions !== null
 							? this.state.filteredSubmissions
@@ -329,7 +497,7 @@ class Table extends Component {
 					}
 					columns={this.state.columns}
 					bordered={false}
-					hover
+					expandRow={this.expandRow}
 				/>
 			</div>
 		);

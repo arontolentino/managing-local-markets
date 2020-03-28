@@ -7,7 +7,10 @@ import Table from '../components/Table';
 import Nav from '../components/Nav';
 
 class Submissions extends Component {
-	state = {};
+	state = {
+		modal: false,
+		selectedSubmission: ''
+	};
 
 	componentDidMount() {
 		const db = firebase.firestore();
@@ -16,12 +19,19 @@ class Submissions extends Component {
 			.doc('selectOptions')
 			.get()
 			.then(doc => {
-				console.log(doc.data());
 				const selectOptions = doc.data();
 
 				this.setState({ selectOptions });
 			});
 	}
+
+	toggleModal = () => {
+		this.setState({ modal: !this.state.modal });
+	};
+
+	onSubmissionSelect = submissionID => {
+		this.setState({ modal: true, selectedSubmission: submissionID });
+	};
 
 	render() {
 		return (
@@ -29,9 +39,10 @@ class Submissions extends Component {
 				<Header userEmail={this.props.userEmail} signOut={true}>
 					<Nav />
 				</Header>
-				<main class="main">
+
+				<main className="main">
 					<div className="wrapper">
-						<Table />
+						<Table onSubmissionSelect={this.onSubmissionSelect} />
 					</div>
 				</main>
 			</div>

@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 import Submissions from './pages/Submissions';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 import './App.css';
 import Login from './pages/Login';
 
