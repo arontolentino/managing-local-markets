@@ -559,6 +559,23 @@ ul {
 	text-align: center;
 }
 
+/*           */
+/* ANALYTICS */
+/*           */
+
+/* .pvtHorizList {
+	width: 100%;
+} */
+
+.pvtUi {
+	width: 100%;
+}
+
+.pvtAxisContainer,
+.pvtVals {
+	background: #efefef !important;
+}
+
 /*               */
 /* MEDIA QUERIES */
 /*               */

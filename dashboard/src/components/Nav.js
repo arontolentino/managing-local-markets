@@ -21,6 +21,15 @@ class Nav extends Component {
 							</li>
 							<li>
 								<NavLink
+									to="/analytics"
+									activeClassName="navActive"
+									className="navItem"
+								>
+									Analytics
+								</NavLink>
+							</li>
+							<li>
+								<NavLink
 									to="/"
 									exact
 									className="navItem"

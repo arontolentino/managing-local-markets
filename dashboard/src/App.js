@@ -7,6 +7,7 @@ import './App.css';
 import Login from './pages/Login';
 
 import firebase from './config/firebase';
+import Analytics from './pages/Analytics';
 
 class App extends Component {
 	state = {
@@ -55,6 +56,14 @@ class App extends Component {
 						exact
 						render={() => (
 							<Submissions userEmail={this.state.userDetails.email} />
+						)}
+					/>
+
+					<Route
+						path="/analytics"
+						exact
+						render={() => (
+							<Analytics userEmail={this.state.userDetails.email} />
 						)}
 					/>
 				</Router>
