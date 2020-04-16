@@ -81,9 +81,7 @@ class Register extends Component {
 			.doc(uid)
 			.set({
 				uid: this.state.user,
-				fullName: this.state.firstName + ' ' + this.state.lastName,
-				firstName: this.state.firstName,
-				lastName: this.state.lastName,
+				name: this.state.firstName + ' ' + this.state.lastName,
 				email: this.state.email,
 				transit: this.state.transit,
 				market: this.state.market,
@@ -104,7 +102,7 @@ class Register extends Component {
 				<div className="wrapper">
 					<div className="authForm">
 						<div className="authFormLogo">
-							<RBCLogo />
+							<RBCLogo className="authLogo" />
 							<h1>Managing Local Markets</h1>
 							{/* <p>
 								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
@@ -120,16 +118,11 @@ class Register extends Component {
 							/>
 							<input
 								type="text"
-								id="firstName"
-								placeholder="First Name"
+								id="name"
+								placeholder="Name"
 								onChange={this.onInputValueChange}
 							/>
-							<input
-								type="text"
-								id="lastName"
-								placeholder="Last Name"
-								onChange={this.onInputValueChange}
-							/>
+
 							<input
 								type="email"
 								id="email"
@@ -146,6 +139,9 @@ class Register extends Component {
 								Register
 							</button>
 						</form>
+					</div>
+					<div className="authFooter">
+						<p>All rights reserved © RBC 2020</p>
 					</div>
 				</div>
 			</div>

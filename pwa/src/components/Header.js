@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import RBCLogo from './logos/RBCLogo';
+import BackIcon from './icons/BackIcon';
+
+import { withRouter } from 'react-router-dom';
 
 class Header extends Component {
 	state = {};
@@ -7,9 +10,16 @@ class Header extends Component {
 		return (
 			<header className="header">
 				<div className="wrapper">
-					<div className="headerlogo">
-						<RBCLogo />
-					</div>
+					{!this.props.backBtn ? <RBCLogo className="headerLogo" /> : null}
+
+					{this.props.backBtn ? (
+						<div class="headerBack" onClick={this.props.history.goBack}>
+							<BackIcon
+								className="headerBackBtn"
+								onClick={this.props.history.goBack}
+							/>
+						</div>
+					) : null}
 					<div className="headerTitle">{this.props.children}</div>
 				</div>
 			</header>
@@ -17,4 +27,4 @@ class Header extends Component {
 	}
 }
 
-export default Header;
+export default withRouter(Header);

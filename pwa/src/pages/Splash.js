@@ -11,12 +11,8 @@ class Splash extends Component {
 				<div className="wrapper">
 					<div className="authForm">
 						<div className="authFormLogo">
-							<RBCLogo />
+							<RBCLogo className="splashLogo" />
 							<h1>Managing Local Markets</h1>
-							<p>
-								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-								diam nonumy eirmod tempor.
-							</p>
 						</div>
 						<form className="authForm">
 							<Link to="/login" className="authBtn">
@@ -26,6 +22,9 @@ class Splash extends Component {
 								Register
 							</Link>
 						</form>
+					</div>
+					<div className="authFooter">
+						<p>All rights reserved © RBC 2020</p>
 					</div>
 				</div>
 			</div>

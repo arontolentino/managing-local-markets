@@ -5,45 +5,35 @@ class SubmitIcon extends Component {
 	render() {
 		return (
 			<svg
-				id="Group_79"
-				data-name="Group 79"
 				xmlns="http://www.w3.org/2000/svg"
-				width="109"
-				height="109"
-				viewBox="0 0 109 109"
+				width="107.855"
+				height="88.972"
+				viewBox="0 0 107.855 88.972"
 			>
-				<circle
-					id="Ellipse_19"
-					data-name="Ellipse 19"
-					cx="54.5"
-					cy="54.5"
-					r="54.5"
-					fill="#006ac3"
-				/>
-				<ellipse
-					id="Ellipse_20"
-					data-name="Ellipse 20"
-					cx="40.5"
-					cy="41"
-					rx="40.5"
-					ry="41"
-					transform="translate(14 13)"
-					fill="#002750"
-				/>
-				<g id="camera-176359-solid" transform="translate(28.908 34.828)">
+				<defs>
+					<linearGradient
+						id="linear-gradient"
+						x1="0.5"
+						x2="0.5"
+						y2="1"
+						gradientUnits="objectBoundingBox"
+					>
+						<stop offset="0" stop-color="#006ac3" stop-opacity="0.294" />
+						<stop offset="0.365" stop-color="#006ac3" stop-opacity="0.157" />
+						<stop offset="1" stop-color="#006ac3" stop-opacity="0" />
+					</linearGradient>
+				</defs>
+				<g id="iconfinder_camera_3325075" transform="translate(0.5 -1.5)">
 					<path
-						id="Path_32"
-						data-name="Path 32"
-						d="M109.205,109.3a6.2,6.2,0,1,0,6.205,6.192A6.2,6.2,0,0,0,109.205,109.3Z"
-						transform="translate(-84.002 -96.714)"
-						fill="#fff"
-					/>
-					<path
-						id="Path_33"
-						data-name="Path 33"
-						d="M43.585,47.9H34.612L32.8,44.288a1.067,1.067,0,0,0-.941-.588H18.331a1.034,1.034,0,0,0-.941.6L15.66,47.917H7.88c-3.8,0-7.88,2.6-7.88,6.838v16.8A8.285,8.285,0,0,0,7.88,79.4h35.7c4.217,0,6.822-4.083,6.822-7.847v-16.8A6.545,6.545,0,0,0,43.585,47.9ZM25.2,74.179a11.56,11.56,0,1,1,11.56-11.56A11.57,11.57,0,0,1,25.2,74.179Z"
-						transform="translate(0 -43.7)"
-						fill="#fff"
+						id="Subtraction_1"
+						data-name="Subtraction 1"
+						d="M94.414,84.972H9.442A9.441,9.441,0,0,1,0,75.531V23.6a9.441,9.441,0,0,1,9.442-9.441H28.325L37.766,0H66.09l9.441,14.162H94.414a9.441,9.441,0,0,1,9.442,9.441V75.531a9.441,9.441,0,0,1-9.442,9.441ZM52.048,30.361a19.875,19.875,0,0,0-7.6,1.491,19.493,19.493,0,0,0-6.2,4.067,18.893,18.893,0,0,0-4.183,6.032,18.55,18.55,0,0,0,0,14.772,18.892,18.892,0,0,0,4.183,6.032,19.493,19.493,0,0,0,6.2,4.067,20.1,20.1,0,0,0,15.194,0,19.493,19.493,0,0,0,6.2-4.067,18.892,18.892,0,0,0,4.183-6.032,18.55,18.55,0,0,0,0-14.772,18.893,18.893,0,0,0-4.183-6.032,19.494,19.494,0,0,0-6.2-4.067A19.875,19.875,0,0,0,52.048,30.361Z"
+						transform="translate(1.5 3.5)"
+						stroke="#006ac3"
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="4"
+						fill="url(#linear-gradient)"
 					/>
 				</g>
 			</svg>

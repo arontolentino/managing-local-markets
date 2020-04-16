@@ -4,11 +4,13 @@ import { Link } from 'react-router-dom';
 import Nav from '../components/Nav';
 import Header from '../components/Header';
 import SubmitIcon from '../components/icons/SubmitIcon';
+import SubmissionsIcon from '../components/icons/SubmissionsIcon';
 import ArrowIcon from '../components/icons/ArrowIcon';
 
 import Spinner from 'react-spinkit';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen, faBell } from '@fortawesome/free-solid-svg-icons';
+import NotificationsIcon from '../components/icons/NotificationsIcon';
 
 class Dashboard extends Component {
 	render() {
@@ -16,18 +18,15 @@ class Dashboard extends Component {
 			<div className="dash">
 				<Header>Managing Local Markets</Header>
 
-				{!this.props.firstName ? (
+				{!this.props.name ? (
 					<div className="spinner">
 						<Spinner name="three-bounce" color="#006ac3" />
 					</div>
 				) : (
 					<div className="page wrapper">
 						<div className="dashIntro">
-							<h2>Welcome Back, {this.props.firstName}...</h2>
-							<p>
-								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-								diam nonumy eirmod tempor
-							</p>
+							<h2>Welcome Back,</h2>
+							<h2>{this.props.name}</h2>
 						</div>
 
 						<div className="dashSubmit">
@@ -46,7 +45,7 @@ class Dashboard extends Component {
 						<ul className="optionsContainer">
 							<li className="option">
 								<Link to="/submissions" className="optionTitle">
-									<FontAwesomeIcon icon={faFolderOpen} />
+									<SubmissionsIcon color="#006AC3" className="optionLogo" />
 									<h3>View/Review My Submissions</h3>
 								</Link>
 
@@ -54,7 +53,11 @@ class Dashboard extends Component {
 							</li>
 							<li className="option">
 								<Link to="/notifications" className="optionTitle">
-									<FontAwesomeIcon icon={faBell} />
+									<NotificationsIcon
+										color="#006AC3"
+										bubbleColor="#006AC3"
+										className="optionLogo"
+									/>
 									<h3>You Have 3 Notifications</h3>
 								</Link>
 

@@ -69,11 +69,7 @@ class Notifications extends Component {
 	render() {
 		return (
 			<div className="submissions">
-				<Header>Managing Local Markets</Header>
-				<SecondaryHeader>
-					<FontAwesomeIcon icon={faBell} />
-					<h2>Notifications</h2>
-				</SecondaryHeader>
+				<Header>Notifications</Header>
 
 				{!this.state.submissions ? (
 					<div className="spinner">

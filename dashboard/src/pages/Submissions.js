@@ -8,8 +8,7 @@ import Nav from '../components/Nav';
 
 class Submissions extends Component {
 	state = {
-		modal: false,
-		selectedSubmission: ''
+		toast: null,
 	};
 
 	componentDidMount() {
@@ -18,19 +17,19 @@ class Submissions extends Component {
 		db.collection('configurations')
 			.doc('selectOptions')
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				const selectOptions = doc.data();
 
 				this.setState({ selectOptions });
 			});
 	}
 
-	toggleModal = () => {
-		this.setState({ modal: !this.state.modal });
-	};
+	triggerToast = (toast) => {
+		this.setState({ toast });
 
-	onSubmissionSelect = submissionID => {
-		this.setState({ modal: true, selectedSubmission: submissionID });
+		setTimeout(() => {
+			this.setState({ toast: null });
+		}, 4000);
 	};
 
 	render() {
@@ -40,9 +39,22 @@ class Submissions extends Component {
 					<Nav />
 				</Header>
 
+				{this.state.toast ? (
+					<div className="notification">
+						<div className="wrapper">
+							<div className="notificationContent">
+								<p>{this.state.toast}</p>
+							</div>
+						</div>
+					</div>
+				) : null}
+
 				<main className="main">
 					<div className="wrapper">
-						<Table onSubmissionSelect={this.onSubmissionSelect} />
+						<Table
+							onSubmissionSelect={this.onSubmissionSelect}
+							triggerToast={this.triggerToast}
+						/>
 					</div>
 				</main>
 			</div>

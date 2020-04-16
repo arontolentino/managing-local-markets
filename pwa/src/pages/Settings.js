@@ -11,6 +11,8 @@ import firebase from '../config/firebase';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCog } from '@fortawesome/free-solid-svg-icons';
+import GearIcon from '../components/icons/GearIcon';
+import InfoIcon from '../components/icons/InfoIcon';
 
 class Settings extends Component {
 	state = {};
@@ -30,26 +32,28 @@ class Settings extends Component {
 	render() {
 		return (
 			<div className="submissions">
-				<Header>Managing Local Markets</Header>
-				<SecondaryHeader>
-					<FontAwesomeIcon icon={faCog} />
-					<h2>MLM Settings & Info</h2>
-				</SecondaryHeader>
+				<Header>Settings and Info</Header>
 
 				<div className="page wrapper">
 					<div className="settingsList">
-						<h3 className="settingsTitle">Setting</h3>
+						<div className="settingsTitle">
+							<GearIcon className="settingsLogo" color="#006AC3" />
+							<h3>Setting</h3>
+						</div>
 						<ul className="optionsContainer">
 							<li className="option">
 								<Link to="/submissions" className="optionTitle">
-									<h3>Wifi only</h3>
+									<h3>Wi-Fi Only</h3>
 								</Link>
 
-								<ArrowIcon />
+								<label class="switch">
+									<input type="checkbox" />
+									<span class="slider round"></span>
+								</label>
 							</li>
 							<li className="option">
 								<Link to="/notifications" className="optionTitle">
-									<h3>Profile</h3>
+									<h3>My Profile</h3>
 								</Link>
 
 								<ArrowIcon />
@@ -57,7 +61,10 @@ class Settings extends Component {
 						</ul>
 					</div>
 					<div className="settingsList">
-						<h3 className="settingsTitle">Information</h3>
+						<div className="settingsTitle">
+							<InfoIcon className="settingsLogo" color="#006AC3" />
+							<h3>Information</h3>
+						</div>
 						<ul className="optionsContainer">
 							<li className="option">
 								<Link to="/submissions" className="optionTitle">
@@ -77,9 +84,8 @@ class Settings extends Component {
 					</div>
 					<div className="settingsList">
 						<button className="signOut" onClick={this.onSignOut}>
-							Sign Out
+							Logout
 						</button>
-						<p className="copyright">All rights reserved @ RBC 2020</p>
 					</div>
 				</div>
 				<Nav />

@@ -7,7 +7,7 @@ class RBCLogo extends Component {
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
 				viewBox="0 0 38 44.54"
-				className="RBCLogo"
+				className={this.props.className}
 			>
 				<g id="Group_12" data-name="Group 12" transform="translate(107 15)">
 					<g id="RBC_rgbP" transform="translate(-106 -14)">
@@ -180,7 +180,7 @@ class RBCLogo extends Component {
 									data-name="Path 7"
 									d="M363.333,267.924a2.022,2.022,0,1,1,2.01-2.022A2.013,2.013,0,0,1,363.333,267.924Zm0-3.643a1.627,1.627,0,1,0,1.556,1.62A1.579,1.579,0,0,0,363.333,264.28Zm.135.474a.628.628,0,0,1,.668.662.582.582,0,0,1-.5.626.5.5,0,0,1,.091.1c.131.163.542.88.542.88h-.537c-.086-.152-.124-.212-.212-.375-.224-.406-.293-.516-.376-.555a.266.266,0,0,0-.072-.016v.946h-.443v-2.267h.843Zm-.4.978h.154c.2,0,.282-.022.343-.076a.317.317,0,0,0,.085-.229.262.262,0,0,0-.161-.277.892.892,0,0,0-.255-.033h-.165v.615Z"
 									transform="translate(-361.32 -263.879)"
-									fill="#005ab4"
+									fill="#fff"
 								/>
 							</g>
 						</g>

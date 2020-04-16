@@ -21,7 +21,7 @@ import EditSuccess from './pages/EditSuccess';
 class App extends Component {
 	state = {
 		user: null,
-		userDetails: { fistName: '' },
+		userDetails: { name: '' },
 		photoFile: null,
 		photoBase64: null,
 		selectedSubmission: {}
@@ -91,7 +91,7 @@ class App extends Component {
 					exact
 					render={() => (
 						<Dashboard
-							firstName={this.state.userDetails.firstName}
+							name={this.state.userDetails.name}
 							onPhotoUpload={this.onPhotoUpload}
 						/>
 					)}

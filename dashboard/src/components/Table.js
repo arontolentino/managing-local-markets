@@ -8,6 +8,9 @@ import firebase from '../config/firebase';
 import moment from 'moment';
 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Tabs, Tab } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
@@ -27,21 +30,21 @@ class Table extends Component {
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
 					},
-					headerStyle: { width: '50px' }
+					headerStyle: { width: '50px' },
 				},
 				{
 					dataField: 'thumbnailURL',
 					text: 'Image',
 					formatter: this.imageFormatter,
-					headerStyle: { width: '120px' }
+					headerStyle: { width: '120px' },
 				},
 				{
-					dataField: 'fullName',
+					dataField: 'name',
 					text: 'User',
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
 				},
 				{
 					dataField: 'financialInstitution',
@@ -49,7 +52,7 @@ class Table extends Component {
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
 				},
 				{
 					dataField: 'product',
@@ -57,7 +60,7 @@ class Table extends Component {
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
 				},
 				{
 					dataField: 'medium',
@@ -65,7 +68,7 @@ class Table extends Component {
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
 				},
 				{
 					dataField: 'region',
@@ -73,7 +76,7 @@ class Table extends Component {
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
 				},
 				{
 					dataField: 'market',
@@ -81,7 +84,7 @@ class Table extends Component {
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
 				},
 				{
 					dataField: 'transit',
@@ -90,7 +93,7 @@ class Table extends Component {
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
 					},
-					headerStyle: { width: '80px' }
+					headerStyle: { width: '80px' },
 				},
 				{
 					dataField: 'date.seconds',
@@ -99,7 +102,7 @@ class Table extends Component {
 					sort: true,
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
-					}
+					},
 				},
 				{
 					dataField: 'status',
@@ -109,8 +112,8 @@ class Table extends Component {
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
 					},
-					headerStyle: { width: '100px' }
-				}
+					headerStyle: { width: '100px' },
+				},
 			],
 			selectOptions: {
 				financialInstitutions: [],
@@ -118,10 +121,11 @@ class Table extends Component {
 				products: [],
 				regions: [],
 				markets: [],
-				transits: []
+				transits: [],
+				status: [],
 			},
 			filters: {},
-			filteredSubmissions: null
+			filteredSubmissions: null,
 		};
 	}
 
@@ -131,9 +135,9 @@ class Table extends Component {
 
 		db.collection('submissions')
 			.orderBy('submissionID', 'desc')
-			.onSnapshot(querySnapshot => {
+			.onSnapshot((querySnapshot) => {
 				var submissions = [];
-				querySnapshot.forEach(function(doc) {
+				querySnapshot.forEach(function (doc) {
 					submissions.push(doc.data());
 				});
 				this.setState({ submissions });
@@ -142,14 +146,14 @@ class Table extends Component {
 		db.collection('configurations')
 			.doc('selectOptions')
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				const selectOptions = doc.data();
 
 				this.setState({ selectOptions });
 			});
 	}
 
-	onApproveAd = e => {
+	onApproveAd = (e) => {
 		e.preventDefault();
 
 		const db = firebase.firestore();
@@ -159,44 +163,60 @@ class Table extends Component {
 			.set({
 				...this.state.selectedSubmission,
 				status: 'Approved',
-				adminComment: ''
+				adminComment: '',
+			})
+			.then(() => {
+				this.props.triggerToast(
+					`Successfully approved ad submission #${this.state.selectedSubmission.submissionID}`
+				);
 			});
 	};
 
-	onUpdateAd = e => {
+	onUpdateAd = (e) => {
 		e.preventDefault();
 
 		const db = firebase.firestore();
 
-		let status;
+		let status, toast;
 
 		if (this.state.selectedSubmission.adminComment) {
 			status = 'Action Required';
+			toast =
+				'Added admin note and set submission status to "Action Required".';
 		} else {
 			status = 'Awaiting';
+			toast = `Successfully updated the ad #${this.state.selectedSubmission.submissionID}.`;
 		}
 
 		db.collection('submissions')
 			.doc(this.state.selectedSubmission.submissionID.toString())
 			.set({
 				...this.state.selectedSubmission,
-				status: status
+				status: status,
+			})
+			.then(() => {
+				this.props.triggerToast(toast);
 			});
 	};
 
-	onExpandInputChange = e => {
+	onExpandInputChange = (e) => {
 		this.setState({
 			selectedSubmission: {
 				...this.state.selectedSubmission,
-				[e.target.id]: e.target.value
-			}
+				[e.target.id]: e.target.value,
+			},
 		});
 	};
 
-	onSelectChange = e => {
-		this.setState({
-			filters: { ...this.state.filters, [e.target.id]: e.target.value }
-		});
+	onSelectChange = (e) => {
+		this.setState(
+			{
+				filters: { ...this.state.filters, [e.target.id]: e.target.value },
+			},
+			() => {
+				this.filterSubmissions();
+			}
+		);
 	};
 
 	statusFormatter = (cell, row) => {
@@ -262,14 +282,14 @@ class Table extends Component {
 		{ label: 'Transit', key: 'transit' },
 		{
 			label: 'Date',
-			key: 'date.seconds'
+			key: 'date.seconds',
 		},
-		{ label: 'Status', key: 'status' }
+		{ label: 'Status', key: 'status' },
 	];
 
 	expandRow = {
 		onlyOneExpanding: true,
-		renderer: row => {
+		renderer: (row) => {
 			return (
 				<div className="expand">
 					<div className="expandHeader">
@@ -298,7 +318,7 @@ class Table extends Component {
 										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
-										{this.state.selectOptions.regions.map(option => (
+										{this.state.selectOptions.regions.map((option) => (
 											<option value={option} key={option}>
 												{option}
 											</option>
@@ -315,7 +335,7 @@ class Table extends Component {
 										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
-										{this.state.selectOptions.markets.map(option => (
+										{this.state.selectOptions.markets.map((option) => (
 											<option value={option} key={option}>
 												{option}
 											</option>
@@ -332,7 +352,7 @@ class Table extends Component {
 										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
-										{this.state.selectOptions.transits.map(option => (
+										{this.state.selectOptions.transits.map((option) => (
 											<option value={option} key={option}>
 												{option}
 											</option>
@@ -350,7 +370,7 @@ class Table extends Component {
 									>
 										<option value=""></option>
 										{this.state.selectOptions.financialInstitutions.map(
-											option => (
+											(option) => (
 												<option value={option} key={option}>
 													{option}
 												</option>
@@ -368,7 +388,7 @@ class Table extends Component {
 										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
-										{this.state.selectOptions.products.map(option => (
+										{this.state.selectOptions.products.map((option) => (
 											<option value={option} key={option}>
 												{option}
 											</option>
@@ -385,7 +405,7 @@ class Table extends Component {
 										onChange={this.onExpandInputChange}
 									>
 										<option value=""></option>
-										{this.state.selectOptions.medium.map(option => (
+										{this.state.selectOptions.medium.map((option) => (
 											<option value={option} key={option}>
 												{option}
 											</option>
@@ -453,106 +473,263 @@ class Table extends Component {
 				return <b style={{ color: 'rgb(209, 0, 0)' }}>Close</b>;
 			}
 			return <b>View</b>;
-		}
+		},
 	};
 
 	render() {
 		return (
 			<div>
-				<div className="filtersContainer">
-					<div className="tableFilters">
-						<div className="tableFilter">
-							<h4>Regional:</h4>
-							<select
-								className="filterSelect"
-								id="region"
-								onChange={this.onSelectChange}
-							>
-								<option value="">All</option>
-								{this.state.selectOptions.regions.map(region => (
-									<option value={region}>{region}</option>
-								))}
-							</select>
+				<Tabs defaultActiveKey="regional" transition={false}>
+					<Tab eventKey="regional" title="Regional">
+						<div className="filtersContainer">
+							<div className="tableFilters">
+								<div className="tableFilter">
+									<h4>Regional:</h4>
+									<select
+										className="filterSelect"
+										id="region"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.regions.map((region) => (
+											<option value={region}>{region}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Institution:</h4>
+									<select
+										className="filterSelect"
+										id="financialInstitution"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.financialInstitutions.map(
+											(financialInstitution) => (
+												<option value={financialInstitution}>
+													{financialInstitution}
+												</option>
+											)
+										)}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Product:</h4>
+									<select
+										className="filterSelect"
+										id="product"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.products.map((product) => (
+											<option value={product}>{product}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Medium:</h4>
+									<select
+										className="filterSelect"
+										id="medium"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.medium.map((medium) => (
+											<option value={medium}>{medium}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Status:</h4>
+									<select
+										className="filterSelect"
+										id="status"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.status.map((option) => (
+											<option value={option}>{option}</option>
+										))}
+									</select>
+								</div>
+							</div>
+							<div className="filterButtons">
+								{/* <button className="filterBtn" onClick={this.filterSubmissions}>
+									Filter
+								</button> */}
+								<button className="filterBtn" onClick={this.resetFilters}>
+									Reset
+								</button>
+							</div>
 						</div>
-						<div className="tableFilter">
-							<h4>Market:</h4>
-							<select
-								className="filterSelect"
-								id="market"
-								onChange={this.onSelectChange}
-							>
-								<option value="">All</option>
-								{this.state.selectOptions.markets.map(market => (
-									<option value={market}>{market}</option>
-								))}
-							</select>
+					</Tab>
+					<Tab eventKey="market" title="Market">
+						<div className="filtersContainer">
+							<div className="tableFilters">
+								<div className="tableFilter">
+									<h4>Market:</h4>
+									<select
+										className="filterSelect"
+										id="market"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.markets.map((market) => (
+											<option value={market}>{market}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Institution:</h4>
+									<select
+										className="filterSelect"
+										id="financialInstitution"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.financialInstitutions.map(
+											(financialInstitution) => (
+												<option value={financialInstitution}>
+													{financialInstitution}
+												</option>
+											)
+										)}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Product:</h4>
+									<select
+										className="filterSelect"
+										id="product"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.products.map((product) => (
+											<option value={product}>{product}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Medium:</h4>
+									<select
+										className="filterSelect"
+										id="medium"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.medium.map((medium) => (
+											<option value={medium}>{medium}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Status:</h4>
+									<select
+										className="filterSelect"
+										id="status"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.status.map((option) => (
+											<option value={option}>{option}</option>
+										))}
+									</select>
+								</div>
+							</div>
+							<div className="filterButtons">
+								{/* <button className="filterBtn" onClick={this.filterSubmissions}>
+									Filter
+								</button> */}
+								<button className="filterBtn" onClick={this.resetFilters}>
+									Reset
+								</button>
+							</div>
 						</div>
-						<div className="tableFilter">
-							<h4>Institution:</h4>
-							<select
-								className="filterSelect"
-								id="financialInstitution"
-								onChange={this.onSelectChange}
-							>
-								<option value="">All</option>
-								{this.state.selectOptions.financialInstitutions.map(
-									financialInstitution => (
-										<option value={financialInstitution}>
-											{financialInstitution}
-										</option>
-									)
-								)}
-							</select>
+					</Tab>
+					<Tab eventKey="transit" title="Transit">
+						<div className="filtersContainer">
+							<div className="tableFilters">
+								<div className="tableFilter">
+									<h4>Transit:</h4>
+									<select
+										className="filterSelect"
+										id="transit"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.transits.map((transit) => (
+											<option value={transit}>{transit}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Institution:</h4>
+									<select
+										className="filterSelect"
+										id="financialInstitution"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.financialInstitutions.map(
+											(financialInstitution) => (
+												<option value={financialInstitution}>
+													{financialInstitution}
+												</option>
+											)
+										)}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Product:</h4>
+									<select
+										className="filterSelect"
+										id="product"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.products.map((product) => (
+											<option value={product}>{product}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Medium:</h4>
+									<select
+										className="filterSelect"
+										id="medium"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.medium.map((medium) => (
+											<option value={medium}>{medium}</option>
+										))}
+									</select>
+								</div>
+								<div className="tableFilter">
+									<h4>Status:</h4>
+									<select
+										className="filterSelect"
+										id="status"
+										onChange={this.onSelectChange}
+									>
+										<option value="">All</option>
+										{this.state.selectOptions.status.map((option) => (
+											<option value={option}>{option}</option>
+										))}
+									</select>
+								</div>
+							</div>
+							<div className="filterButtons">
+								{/* <button className="filterBtn" onClick={this.filterSubmissions}>
+									Filter
+								</button> */}
+								<button className="filterBtn" onClick={this.resetFilters}>
+									Reset
+								</button>
+							</div>
 						</div>
-						<div className="tableFilter">
-							<h4>Product:</h4>
-							<select
-								className="filterSelect"
-								id="product"
-								onChange={this.onSelectChange}
-							>
-								<option value="">All</option>
-								{this.state.selectOptions.products.map(product => (
-									<option value={product}>{product}</option>
-								))}
-							</select>
-						</div>
-						<div className="tableFilter">
-							<h4>Medium:</h4>
-							<select
-								className="filterSelect"
-								id="medium"
-								onChange={this.onSelectChange}
-							>
-								<option value="">All</option>
-								{this.state.selectOptions.medium.map(medium => (
-									<option value={medium}>{medium}</option>
-								))}
-							</select>
-						</div>
-						<div className="tableFilter">
-							<h4>Transit:</h4>
-							<select
-								className="filterSelect"
-								id="transit"
-								onChange={this.onSelectChange}
-							>
-								<option value="">All</option>
-								{this.state.selectOptions.transits.map(transit => (
-									<option value={transit}>{transit}</option>
-								))}
-							</select>
-						</div>
-					</div>
-					<div className="filterButtons">
-						<button className="filterBtn" onClick={this.filterSubmissions}>
-							Filter
-						</button>
-						<button className="filterBtn" onClick={this.resetFilters}>
-							Reset
-						</button>
-					</div>
-				</div>
+					</Tab>
+				</Tabs>
 
 				<div className="tableExport">
 					<CSVLink

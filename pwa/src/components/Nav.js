@@ -3,12 +3,12 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faCamera,
-	faFolderOpen,
-	faBell,
-	faCog
-} from '@fortawesome/free-solid-svg-icons';
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import CameraIcon from './icons/CameraIcon';
+import SubmissionsIcon from './icons/SubmissionsIcon';
+import NotificationsIcon from './icons/NotificationsIcon';
+import MoreIcon from './icons/MoreIcon';
+import GearIcon from './icons/GearIcon';
 
 class Nav extends Component {
 	state = {};
@@ -23,7 +23,7 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<FontAwesomeIcon icon={faCamera} />
+								<CameraIcon className="navIcon" color="#fff" />
 								Take Photo
 							</NavLink>
 							<NavLink
@@ -31,7 +31,7 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<FontAwesomeIcon icon={faFolderOpen} />
+								<SubmissionsIcon className="navIcon" color="#fff" />
 								Submissions
 							</NavLink>
 							<NavLink
@@ -39,7 +39,11 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<FontAwesomeIcon icon={faBell} />
+								<NotificationsIcon
+									className="navIcon"
+									color="#fff"
+									bubbleColor="#F93F26"
+								/>
 								Notifications
 							</NavLink>
 							<NavLink
@@ -47,7 +51,7 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
-								<FontAwesomeIcon icon={faCog} />
+								<GearIcon className="navIcon" color="#fff"></GearIcon>
 								Settings
 							</NavLink>
 						</ul>

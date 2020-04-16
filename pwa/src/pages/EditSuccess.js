@@ -3,6 +3,9 @@ import React, { Component } from 'react';
 import Nav from '../components/Nav';
 import Header from '../components/Header';
 import ArrowIcon from '../components/icons/ArrowIcon';
+import UploadIcon from '../components/icons/UploadIcon';
+import SubmissionsIcon from '../components/icons/SubmissionsIcon';
+import CameraIcon from '../components/icons/CameraIcon';
 
 import { Link } from 'react-router-dom';
 
@@ -20,8 +23,8 @@ class EditSuccess extends Component {
 				<Header>Photo Ad Submission</Header>
 				<div className="page wrapper">
 					<div className="successMessage">
+						<UploadIcon />
 						<h2>Thank You</h2>
-						<FontAwesomeIcon icon={faCloudUploadAlt} />
 						<p>Submission Updated!</p>
 					</div>
 
@@ -31,7 +34,7 @@ class EditSuccess extends Component {
 								to={`/submissions/${this.props.match.params.id}/edit`}
 								className="optionTitle"
 							>
-								<FontAwesomeIcon icon={faFolderOpen} />
+								<CameraIcon color="#006AC3" className="optionLogo" />
 								<h3>View Updated Submission</h3>
 							</Link>
 
@@ -39,7 +42,7 @@ class EditSuccess extends Component {
 						</li>
 						<li className="option">
 							<Link to="/submissions" className="optionTitle">
-								<FontAwesomeIcon icon={faBell} />
+								<SubmissionsIcon color="#006AC3" className="optionLogo" />
 								<h3>See My Submissions</h3>
 							</Link>
 

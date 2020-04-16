@@ -18,15 +18,31 @@ class Submit extends Component {
 		product: null,
 		medium: null,
 		comment: null,
-		counter: null
+		counter: null,
+
+		selectOptions: {
+			financialInstitutions: [],
+			medium: [],
+			products: [],
+			regions: [],
+			markets: [],
+			transits: []
+		}
 	};
 
 	componentDidMount() {
+		const db = firebase.firestore();
+
 		this.getCounter();
 
-		this.doSomething.then(function(res) {
-			console.log(res);
-		});
+		db.collection('configurations')
+			.doc('selectOptions')
+			.get()
+			.then(doc => {
+				const selectOptions = doc.data();
+
+				this.setState({ selectOptions });
+			});
 	}
 
 	getCounter = () => {
@@ -133,9 +149,7 @@ class Submit extends Component {
 			.set({
 				// User Details
 				userID: this.props.userDetails.uid,
-				fullName: this.props.userDetails.fullName,
-				firstName: this.props.userDetails.firstName,
-				lastName: this.props.userDetails.lastName,
+				name: this.props.userDetails.name,
 				transit: this.props.userDetails.transit,
 				market: this.props.userDetails.market,
 				region: this.props.userDetails.region,
@@ -192,83 +206,82 @@ class Submit extends Component {
 								</div>
 							)}
 
-							<select
-								className="select"
-								id="financialInstitution"
-								onChange={this.onValueChange}
-							>
-								<option value="" disabled selected>
-									Tag Financial Institution
-								</option>
-								<option value="ATB">ATB</option>
-								<option value="BMO">BMO</option>
-								<option value="Canadian Western Bank">
-									Canadian Western Bank
-								</option>
-								<option value="CIBC">CIBC</option>
-								<option value="Coastal Capital">Coastal Capital</option>
-								<option value="HSBC">HSBC</option>
-								<option value="Manulife">Manulife</option>
-								<option value="Meridian">Meridian</option>
-								<option value="National Bank">National Bank</option>
-								<option value="PC Financial">PC Financial</option>
-								<option value="Scotiabank">Scotiabank</option>
-								<option value="TD Canada Trust">TD Canada Trust</option>
-								<option value="Tangerine">Tangerine</option>
-								<option value="Vancity">Vancity</option>
-								<option value="Other">Other</option>
-							</select>
-							<select
-								className="select"
-								id="product"
-								onChange={this.onValueChange}
-							>
-								<option value="" disabled selected>
-									Tag Product
-								</option>
-								<option value="Bank Accounts">Bank Accounts</option>
-								<option value="Credit Cards">Credit Cards</option>
-								<option value="Creditor Insurance">Creditor Insurance</option>
-								<option value="Home Equity Financing">
-									Home Equity Financing
-								</option>
-								<option value="Loans & Lines of Credit">
-									Loans & Lines of Credit
-								</option>
-								<option value="Non-Registered Savings">
-									Non-Registered Savings
-								</option>
-								<option value="Registered Savings">Registered Savings</option>
-								<option value="Self-Directed Investing">
-									Self-Directed Investing
-								</option>
-								<option value="Other">Other</option>
-							</select>
-							<select
-								className="select"
-								id="medium"
-								onChange={this.onValueChange}
-							>
-								<option value="" disabled selected>
-									Tag Medium
-								</option>
-								<option value="Billboards">Billboards</option>
-								<option value="Online">Online</option>
-								<option value="Print">Print</option>
-								<option value="Public Transportation">
-									Public Transportation
-								</option>
-								<option value="Signage">Signage</option>
-								<option value="TV">TV</option>
-								<option value="Other">Other</option>
-							</select>
+							<div className="formInput">
+								<label htmlFor="financialInstitution" className="selectLabel">
+									Financial Institution:
+								</label>
+								<select
+									className="select"
+									id="financialInstitution"
+									onChange={this.onValueChange}
+								>
+									<option value="" disabled selected>
+										Select Financial Institution
+									</option>
+									{this.state.selectOptions.financialInstitutions.map(
+										option => (
+											<option value={option} key={option}>
+												{option}
+											</option>
+										)
+									)}
+								</select>
+							</div>
 
-							<textarea
-								className="comment"
-								id="comment"
-								placeholder="Add Comment..."
-								onChange={this.onValueChange}
-							/>
+							<div className="formInput">
+								<label htmlFor="product" className="selectLabel">
+									Product:
+								</label>
+								<select
+									className="select"
+									id="product"
+									onChange={this.onValueChange}
+								>
+									<option value="" disabled selected>
+										Select Product
+									</option>
+
+									{this.state.selectOptions.products.map(option => (
+										<option value={option} key={option}>
+											{option}
+										</option>
+									))}
+								</select>
+							</div>
+
+							<div className="formInput">
+								<label htmlFor="medium" className="selectLabel">
+									Medium:
+								</label>
+								<select
+									className="select"
+									id="medium"
+									onChange={this.onValueChange}
+								>
+									<option value="" disabled selected>
+										Select Medium
+									</option>
+									{this.state.selectOptions.medium.map(option => (
+										<option value={option} key={option}>
+											{option}
+										</option>
+									))}
+								</select>
+							</div>
+
+							<div className="formInput">
+								<label htmlFor="comment" className="selectLabel">
+									Comment
+								</label>
+								<textarea
+									className="comment"
+									id="comment"
+									placeholder="Add Comment..."
+									rows="5"
+									onChange={this.onValueChange}
+								/>
+							</div>
+
 							<div className="submitBtns">
 								<p
 									className="cancelBtn"

@@ -6,29 +6,26 @@ import ArrowIcon from '../components/icons/ArrowIcon';
 
 import { Link } from 'react-router-dom';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-	faCloudUploadAlt,
-	faFolderOpen,
-	faBell
-} from '@fortawesome/free-solid-svg-icons';
+import SubmissionsIcon from '../components/icons/SubmissionsIcon';
+import CameraIcon from '../components/icons/CameraIcon';
+import UploadIcon from '../components/icons/UploadIcon';
 
 class Success extends Component {
 	render() {
 		return (
 			<div className="success">
-				<Header>Photo Ad Submission</Header>
+				<Header>Ad Submitted</Header>
 				<div className="page wrapper">
 					<div className="successMessage">
+						<UploadIcon />
 						<h2>Thank You</h2>
-						<FontAwesomeIcon icon={faCloudUploadAlt} />
 						<p>Upload Successful!</p>
 					</div>
 
 					<ul className="optionsContainer">
 						<li className="option">
 							<Link to="/dashboard/submit" className="optionTitle">
-								<FontAwesomeIcon icon={faFolderOpen} />
+								<CameraIcon color="#006AC3" className="optionLogo" />
 								<h3>Submit Another Photo</h3>
 							</Link>
 
@@ -36,7 +33,7 @@ class Success extends Component {
 						</li>
 						<li className="option">
 							<Link to="/submissions" className="optionTitle">
-								<FontAwesomeIcon icon={faBell} />
+								<SubmissionsIcon color="#006AC3" className="optionLogo" />
 								<h3>See My Submissions</h3>
 							</Link>
 

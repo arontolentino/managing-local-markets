@@ -15,7 +15,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
 class Edit extends Component {
-	state = { submission: null };
+	state = {
+		submission: null,
+		selectOptions: {
+			financialInstitutions: [],
+			medium: [],
+			products: [],
+			regions: [],
+			markets: [],
+			transits: []
+		}
+	};
 
 	componentDidMount() {
 		const db = firebase.firestore();
@@ -29,6 +39,15 @@ class Edit extends Component {
 				const submission = doc.data();
 
 				this.setState({ submission });
+			});
+
+		db.collection('configurations')
+			.doc('selectOptions')
+			.get()
+			.then(doc => {
+				const selectOptions = doc.data();
+
+				this.setState({ selectOptions });
 			});
 	}
 
@@ -168,15 +187,7 @@ class Edit extends Component {
 	render() {
 		return (
 			<div className="edit">
-				<Header>Managing Local Markets</Header>
-				<SecondaryHeader>
-					<FontAwesomeIcon
-						icon={faChevronLeft}
-						onClick={() => this.props.history.goBack()}
-					/>
-
-					<h2>Edit Submission</h2>
-				</SecondaryHeader>
+				<Header backBtn="true">Edit Submission</Header>
 
 				{!this.state.submission ? (
 					<div className="spinner">
@@ -205,87 +216,83 @@ class Edit extends Component {
 								onChange={e => this.onPhotoUpload(e)}
 							/>
 
-							<select
-								className="select"
-								id="financialInstitution"
-								onChange={this.onValueChange}
-								value={this.state.submission.financialInstitution}
-							>
-								<option value="" disabled selected>
-									Tag Financial Institution
-								</option>
-								<option value="ATB">ATB</option>
-								<option value="BMO">BMO</option>
-								<option value="Canadian Western Bank">
-									Canadian Western Bank
-								</option>
-								<option value="CIBC">CIBC</option>
-								<option value="Coastal Capital">Coastal Capital</option>
-								<option value="HSBC">HSBC</option>
-								<option value="Manulife">Manulife</option>
-								<option value="Meridian">Meridian</option>
-								<option value="National Bank">National Bank</option>
-								<option value="PC Financial">PC Financial</option>
-								<option value="Scotiabank">Scotiabank</option>
-								<option value="TD Canada Trust">TD Canada Trust</option>
-								<option value="Tangerine">Tangerine</option>
-								<option value="Vancity">Vancity</option>
-								<option value="Other">Other</option>
-							</select>
-							<select
-								className="select"
-								id="product"
-								onChange={this.onValueChange}
-								value={this.state.submission.product}
-							>
-								<option value="" disabled selected>
-									Tag Product
-								</option>
-								<option value="Bank Accounts">Bank Accounts</option>
-								<option value="Credit Cards">Credit Cards</option>
-								<option value="Creditor Insurance">Creditor Insurance</option>
-								<option value="Home Equity Financing">
-									Home Equity Financing
-								</option>
-								<option value="Loans & Lines of Credit">
-									Loans & Lines of Credit
-								</option>
-								<option value="Non-Registered Savings">
-									Non-Registered Savings
-								</option>
-								<option value="Registered Savings">Registered Savings</option>
-								<option value="Self-Directed Investing">
-									Self-Directed Investing
-								</option>
-								<option value="Other">Other</option>
-							</select>
-							<select
-								className="select"
-								id="medium"
-								onChange={this.onValueChange}
-								value={this.state.submission.medium}
-							>
-								<option value="" disabled selected>
-									Tag Medium
-								</option>
-								<option value="Billboards">Billboards</option>
-								<option value="Online">Online</option>
-								<option value="Print">Print</option>
-								<option value="Public Transportation">
-									Public Transportation
-								</option>
-								<option value="Signage">Signage</option>
-								<option value="TV">TV</option>
-								<option value="Other">Other</option>
-							</select>
+							<div className="formInput">
+								{' '}
+								<label htmlFor="product" className="selectLabel">
+									Financial Institution:
+								</label>
+								<select
+									className="select"
+									id="financialInstitution"
+									onChange={this.onValueChange}
+									defaultValue={this.state.submission.financialInstitution}
+								>
+									<option value="" disabled>
+										Tag Financial Institution
+									</option>
+									{this.state.selectOptions.financialInstitutions.map(
+										option => (
+											<option value={option} key={option}>
+												{option}
+											</option>
+										)
+									)}
+								</select>
+							</div>
 
-							<textarea
-								className="comment"
-								id="comment"
-								placeholder="Add Comment..."
-								onChange={this.onValueChange}
-								value={this.state.submission.comment}
-							/>
+							<div className="formInput">
+								<label htmlFor="product" className="selectLabel">
+									Product:
+								</label>
+								<select
+									className="select"
+									id="product"
+									onChange={this.onValueChange}
+									defaultValue={this.state.submission.product}
+								>
+									<option value="" disabled>
+										Tag Product
+									</option>
+									{this.state.selectOptions.products.map(option => (
+										<option value={option} key={option}>
+											{option}
+										</option>
+									))}
+								</select>
+							</div>
+							<div className="formInput">
+								<label htmlFor="medium" className="selectLabel">
+									Medium:
+								</label>
+								<select
+									className="select"
+									id="medium"
+									onChange={this.onValueChange}
+									defaultValue={this.state.submission.medium}
+								>
+									<option value="" disabled>
+										Tag Medium
+									</option>
+									{this.state.selectOptions.medium.map(option => (
+										<option value={option} key={option}>
+											{option}
+										</option>
+									))}
+								</select>
+							</div>
+							<div className="formInput">
+								<label htmlFor="comment" className="selectLabel">
+									Comment
+								</label>
+								<textarea
+									className="comment"
+									id="comment"
+									placeholder="Add Comment..."
+									onChange={this.onValueChange}
+									defaultValue={this.state.submission.comment}
+								/>
+							</div>
+
 							<div className="submitBtns">
 								<p
 									className="cancelBtn"

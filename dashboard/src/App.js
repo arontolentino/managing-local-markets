@@ -3,8 +3,6 @@ import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 import Submissions from './pages/Submissions';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-
 import './App.css';
 import Login from './pages/Login';
 
@@ -13,7 +11,7 @@ import firebase from './config/firebase';
 class App extends Component {
 	state = {
 		user: null,
-		userDetails: { email: '' }
+		userDetails: { email: '' },
 	};
 
 	componentDidMount() {
@@ -24,7 +22,7 @@ class App extends Component {
 	db = firebase.firestore();
 
 	initApp = () => {
-		this.auth.onAuthStateChanged(user => {
+		this.auth.onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({ user: user.uid }, () => {
 					this.getUserDetails();
@@ -38,7 +36,7 @@ class App extends Component {
 			.collection('users')
 			.doc(this.state.user)
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				this.setState({ userDetails: doc.data() });
 			});
 	};

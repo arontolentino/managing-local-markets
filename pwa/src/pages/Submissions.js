@@ -85,11 +85,7 @@ class Submissions extends Component {
 	render() {
 		return (
 			<div className="submissions">
-				<Header>Managing Local Markets</Header>
-				<SecondaryHeader>
-					<FontAwesomeIcon icon={faFolderOpen} />
-					<h2>My Submissions</h2>
-				</SecondaryHeader>
+				<Header>Submissions</Header>
 
 				{!this.state.submissions ? (
 					<div className="spinner">

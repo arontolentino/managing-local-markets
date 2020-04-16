@@ -4,7 +4,9 @@ import RBCLogo from '../components/logos/RBCLogo';
 import firebase from '../config/firebase';
 
 class Login extends Component {
-	state = {};
+	state = {
+		error: null
+	};
 
 	// Log in existing user
 	onLogin = e => {
@@ -21,7 +23,7 @@ class Login extends Component {
 				console.log('User is now signed in!');
 			})
 			.catch(error => {
-				console.log(error);
+				this.setState({ error: error.message });
 			});
 	};
 
@@ -37,14 +39,14 @@ class Login extends Component {
 				<div className="wrapper">
 					<div className="authForm">
 						<div className="authFormLogo">
-							<RBCLogo />
+							<RBCLogo className="authLogo" />
 							<h1>Managing Local Markets</h1>
-							{/* <p>
-								Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-								diam nonumy eirmod tempor.
-							</p> */}
+							<p>What’s happening in your neighbourhood?</p>
 						</div>
 						<form className="authForm">
+							{this.state.error ? (
+								<p className="authError">{this.state.error}</p>
+							) : null}
 							<input
 								type="email"
 								id="email"
@@ -64,6 +66,9 @@ class Login extends Component {
 								<a href="#/login">Forgot your password?</a>
 							</p>
 						</form>
+					</div>
+					<div className="authFooter">
+						<p>All rights reserved © RBC 2020</p>
 					</div>
 				</div>
 			</div>

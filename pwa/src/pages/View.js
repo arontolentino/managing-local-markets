@@ -14,10 +14,6 @@ class View extends Component {
 		return (
 			<div className="submissions">
 				<Header>Managing Local Markets</Header>
-				<SecondaryHeader>
-					<FontAwesomeIcon icon={faChevronLeft} />
-					<h2>View Submission</h2>
-				</SecondaryHeader>
 
 				<div className="page wrapper"></div>
 				<Nav />
