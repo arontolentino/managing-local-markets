@@ -20,7 +20,6 @@ const Analytics = ({ userEmail }) => {
 					submissions.push(doc.data());
 				});
 				setSubmissions({ submissions });
-				console.log(submissions);
 			});
 	}, []);
 

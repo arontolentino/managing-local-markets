@@ -8,9 +8,6 @@ import firebase from '../config/firebase';
 import moment from 'moment';
 
 import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import { Tabs, Tab } from 'react-bootstrap';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSort } from '@fortawesome/free-solid-svg-icons';
@@ -21,6 +18,7 @@ class Table extends Component {
 		this.state = {
 			selectedSubmission: {},
 			submissions: [],
+			banks: [],
 			columns: [
 				{
 					dataField: 'submissionID',
@@ -124,7 +122,20 @@ class Table extends Component {
 				transits: [],
 				status: [],
 			},
-			filters: {},
+			filters: {
+				region: '',
+				market: '',
+				transit: '',
+				financialInstitution: '',
+				product: '',
+				medium: '',
+				status: '',
+			},
+			filteredFilters: {
+				regions: null,
+				markets: null,
+				transits: null,
+			},
 			filteredSubmissions: null,
 		};
 	}
@@ -150,6 +161,16 @@ class Table extends Component {
 				const selectOptions = doc.data();
 
 				this.setState({ selectOptions });
+			});
+
+		db.collection('banks')
+			.get()
+			.then((querySnapshot) => {
+				var banks = [];
+				querySnapshot.forEach(function (doc) {
+					banks.push(doc.data());
+				});
+				this.setState({ banks });
 			});
 	}
 
@@ -209,11 +230,112 @@ class Table extends Component {
 	};
 
 	onSelectChange = (e) => {
+		const filter = e.target.id;
+		const value = e.target.value;
+
+		if (filter === 'region' && value !== '') {
+			const banks = this.state.banks.filter((bank) => bank.region === value);
+
+			let markets = [];
+			banks.forEach((bank) => markets.push(bank.market));
+			markets = [...new Set(markets)];
+
+			let transits = [];
+			banks.forEach((bank) => transits.push(bank.transit));
+			transits = [...new Set(transits)];
+			transits.sort((a, b) => a - b);
+
+			this.setState({
+				filteredFilters: {
+					markets,
+					transits,
+				},
+			});
+		} else if (filter === 'market' && value !== '') {
+			const banks = this.state.banks.filter((bank) => bank.market === value);
+
+			let transits = [];
+			banks.forEach((bank) => transits.push(bank.transit));
+			transits = [...new Set(transits)];
+			transits.sort((a, b) => a - b);
+
+			this.setState({
+				filteredFilters: {
+					...this.state.filteredFilters,
+					transits,
+				},
+			});
+		} else if (
+			filter === 'market' &&
+			value === '' &&
+			this.state.filters.region !== ''
+		) {
+			const banks = this.state.banks.filter(
+				(bank) => bank.region === this.state.filters.region
+			);
+
+			let transits = [];
+			banks.forEach((bank) => transits.push(bank.transit));
+			transits = [...new Set(transits)];
+			transits.sort((a, b) => a - b);
+
+			this.setState({
+				filteredFilters: {
+					...this.state.filteredFilters,
+					transits,
+				},
+			});
+		} else if (
+			filter === 'market' &&
+			value === '' &&
+			this.state.filters.region === ''
+		) {
+			this.setState({
+				filteredFilters: {
+					transits: null,
+				},
+			});
+		} else if (filter === 'region' && value === '') {
+			// Revert back to unfiltered filters
+			this.setState({
+				filteredFilters: {
+					markets: null,
+					transits: null,
+				},
+			});
+		}
+
 		this.setState(
 			{
 				filters: { ...this.state.filters, [e.target.id]: e.target.value },
 			},
 			() => {
+				if (filter === 'region') {
+					this.setState(
+						{
+							filters: {
+								...this.state.filters,
+								market: '',
+								transit: '',
+							},
+						},
+						() => {
+							this.filterSubmissions();
+						}
+					);
+				} else if (filter === 'market') {
+					this.setState(
+						{
+							filters: {
+								...this.state.filters,
+								transit: '',
+							},
+						},
+						() => {
+							this.filterSubmissions();
+						}
+					);
+				}
 				this.filterSubmissions();
 			}
 		);
@@ -479,257 +601,123 @@ class Table extends Component {
 	render() {
 		return (
 			<div>
-				<Tabs defaultActiveKey="regional" transition={false}>
-					<Tab eventKey="regional" title="Regional">
-						<div className="filtersContainer">
-							<div className="tableFilters">
-								<div className="tableFilter">
-									<h4>Regional:</h4>
-									<select
-										className="filterSelect"
-										id="region"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.regions.map((region) => (
-											<option value={region}>{region}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Institution:</h4>
-									<select
-										className="filterSelect"
-										id="financialInstitution"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.financialInstitutions.map(
-											(financialInstitution) => (
-												<option value={financialInstitution}>
-													{financialInstitution}
-												</option>
-											)
-										)}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Product:</h4>
-									<select
-										className="filterSelect"
-										id="product"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.products.map((product) => (
-											<option value={product}>{product}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Medium:</h4>
-									<select
-										className="filterSelect"
-										id="medium"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.medium.map((medium) => (
-											<option value={medium}>{medium}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Status:</h4>
-									<select
-										className="filterSelect"
-										id="status"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.status.map((option) => (
-											<option value={option}>{option}</option>
-										))}
-									</select>
-								</div>
-							</div>
-							<div className="filterButtons">
-								{/* <button className="filterBtn" onClick={this.filterSubmissions}>
-									Filter
-								</button> */}
-								<button className="filterBtn" onClick={this.resetFilters}>
-									Reset
-								</button>
-							</div>
+				<div className="filtersContainer">
+					<div className="tableFilters">
+						<div className="tableFilter">
+							<h4>Region:</h4>
+							<select
+								className="filterSelect"
+								id="region"
+								onChange={this.onSelectChange}
+							>
+								<option value="">All</option>
+								{this.state.selectOptions.regions.map((region) => (
+									<option value={region}>{region}</option>
+								))}
+							</select>
 						</div>
-					</Tab>
-					<Tab eventKey="market" title="Market">
-						<div className="filtersContainer">
-							<div className="tableFilters">
-								<div className="tableFilter">
-									<h4>Market:</h4>
-									<select
-										className="filterSelect"
-										id="market"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.markets.map((market) => (
+						<div className="tableFilter">
+							<h4>Market:</h4>
+							<select
+								className="filterSelect"
+								id="market"
+								onChange={this.onSelectChange}
+								value={this.state.filters.market}
+							>
+								<option value="">All</option>
+								{this.state.filteredFilters.markets
+									? this.state.filteredFilters.markets.map((market) => (
 											<option value={market}>{market}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Institution:</h4>
-									<select
-										className="filterSelect"
-										id="financialInstitution"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.financialInstitutions.map(
-											(financialInstitution) => (
-												<option value={financialInstitution}>
-													{financialInstitution}
-												</option>
-											)
-										)}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Product:</h4>
-									<select
-										className="filterSelect"
-										id="product"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.products.map((product) => (
-											<option value={product}>{product}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Medium:</h4>
-									<select
-										className="filterSelect"
-										id="medium"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.medium.map((medium) => (
-											<option value={medium}>{medium}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Status:</h4>
-									<select
-										className="filterSelect"
-										id="status"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.status.map((option) => (
-											<option value={option}>{option}</option>
-										))}
-									</select>
-								</div>
-							</div>
-							<div className="filterButtons">
-								{/* <button className="filterBtn" onClick={this.filterSubmissions}>
-									Filter
-								</button> */}
-								<button className="filterBtn" onClick={this.resetFilters}>
-									Reset
-								</button>
-							</div>
+									  ))
+									: this.state.selectOptions.markets.map((market) => (
+											<option value={market}>{market}</option>
+									  ))}
+							</select>
 						</div>
-					</Tab>
-					<Tab eventKey="transit" title="Transit">
-						<div className="filtersContainer">
-							<div className="tableFilters">
-								<div className="tableFilter">
-									<h4>Transit:</h4>
-									<select
-										className="filterSelect"
-										id="transit"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.transits.map((transit) => (
+						<div className="tableFilter">
+							<h4>Transit:</h4>
+							<select
+								className="filterSelect"
+								id="transit"
+								onChange={this.onSelectChange}
+								value={this.state.filters.transit}
+							>
+								<option value="">All</option>
+								{this.state.filteredFilters.transits
+									? this.state.filteredFilters.transits.map((transit) => (
 											<option value={transit}>{transit}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Institution:</h4>
-									<select
-										className="filterSelect"
-										id="financialInstitution"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.financialInstitutions.map(
-											(financialInstitution) => (
-												<option value={financialInstitution}>
-													{financialInstitution}
-												</option>
-											)
-										)}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Product:</h4>
-									<select
-										className="filterSelect"
-										id="product"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.products.map((product) => (
-											<option value={product}>{product}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Medium:</h4>
-									<select
-										className="filterSelect"
-										id="medium"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.medium.map((medium) => (
-											<option value={medium}>{medium}</option>
-										))}
-									</select>
-								</div>
-								<div className="tableFilter">
-									<h4>Status:</h4>
-									<select
-										className="filterSelect"
-										id="status"
-										onChange={this.onSelectChange}
-									>
-										<option value="">All</option>
-										{this.state.selectOptions.status.map((option) => (
-											<option value={option}>{option}</option>
-										))}
-									</select>
-								</div>
-							</div>
-							<div className="filterButtons">
-								{/* <button className="filterBtn" onClick={this.filterSubmissions}>
+									  ))
+									: this.state.selectOptions.transits.map((transit) => (
+											<option value={transit}>{transit}</option>
+									  ))}
+							</select>
+						</div>
+						<div className="tableFilter">
+							<h4>Institution:</h4>
+							<select
+								className="filterSelect"
+								id="financialInstitution"
+								onChange={this.onSelectChange}
+							>
+								<option value="">All</option>
+								{this.state.selectOptions.financialInstitutions.map(
+									(financialInstitution) => (
+										<option value={financialInstitution}>
+											{financialInstitution}
+										</option>
+									)
+								)}
+							</select>
+						</div>
+						<div className="tableFilter">
+							<h4>Product:</h4>
+							<select
+								className="filterSelect"
+								id="product"
+								onChange={this.onSelectChange}
+							>
+								<option value="">All</option>
+								{this.state.selectOptions.products.map((product) => (
+									<option value={product}>{product}</option>
+								))}
+							</select>
+						</div>
+						<div className="tableFilter">
+							<h4>Medium:</h4>
+							<select
+								className="filterSelect"
+								id="medium"
+								onChange={this.onSelectChange}
+							>
+								<option value="">All</option>
+								{this.state.selectOptions.medium.map((medium) => (
+									<option value={medium}>{medium}</option>
+								))}
+							</select>
+						</div>
+						<div className="tableFilter">
+							<h4>Status:</h4>
+							<select
+								className="filterSelect"
+								id="status"
+								onChange={this.onSelectChange}
+							>
+								<option value="">All</option>
+								{this.state.selectOptions.status.map((option) => (
+									<option value={option}>{option}</option>
+								))}
+							</select>
+						</div>
+					</div>
+					<div className="filterButtons">
+						{/* <button className="filterBtn" onClick={this.filterSubmissions}>
 									Filter
 								</button> */}
-								<button className="filterBtn" onClick={this.resetFilters}>
-									Reset
-								</button>
-							</div>
-						</div>
-					</Tab>
-				</Tabs>
+						<button className="filterBtn" onClick={this.resetFilters}>
+							Reset
+						</button>
+					</div>
+				</div>
 
 				<div className="tableExport">
 					<CSVLink

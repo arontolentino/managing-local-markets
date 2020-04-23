@@ -18,8 +18,6 @@ class PivotTable extends Component {
 	state = {};
 
 	render() {
-		console.log(this.props.data.submissions);
-
 		if (this.props.data.submissions) {
 			return (
 				<PivotTableUI
