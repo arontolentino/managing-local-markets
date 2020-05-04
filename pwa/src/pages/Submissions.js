@@ -16,19 +16,19 @@ import {
 	faEdit,
 	faFolderOpen,
 	faExclamationCircle,
-	faCheckCircle
+	faCheckCircle,
 } from '@fortawesome/free-solid-svg-icons';
 
 class Submissions extends Component {
 	state = {
 		user: null,
-		submissions: null
+		submissions: null,
 	};
 
 	static getDerivedStateFromProps(props, state) {
 		if (props.user !== state.user) {
 			return {
-				user: props.user
+				user: props.user,
 			};
 		}
 		return null;
@@ -51,10 +51,10 @@ class Submissions extends Component {
 		db.collection('submissions')
 			.where('userID', '==', this.state.user)
 			.orderBy('submissionID', 'desc')
-			.onSnapshot(querySnapshot => {
+			.onSnapshot((querySnapshot) => {
 				const submissions = [];
 
-				querySnapshot.forEach(function(doc) {
+				querySnapshot.forEach(function (doc) {
 					submissions.push(doc.data());
 				});
 
@@ -62,25 +62,11 @@ class Submissions extends Component {
 					console.error('No submissions found!');
 				} else {
 					this.setState({
-						submissions
+						submissions,
 					});
 				}
 			});
 	};
-
-	// renderStatusIcon = (status) => {
-
-	// 	if (status === 'Awaiting Status') {
-	// 		return <FontAwesomeIcon icon={faClock} />
-	// 	} else if (status === 'Approved') {
-	// 		return <FontAwesomeIcon icon={faCheckCircle} />
-	// 	} else {
-	// 		return <FontAwesomeIcon icon={faExclamationCircle}
-	// 	}
-	// 		{/* {submission.status === 'Awaiting Status' ? (
-	// 											<FontAwesomeIcon icon={faClock} />
-	// 										) : (submission.status === 'Action Required' ? <FontAwesomeIcon icon={faExclamationCircle} /> : (<FontAwesomeIcon icon={faCheckCircle} />))} */}
-	// }
 
 	render() {
 		return (
@@ -94,7 +80,7 @@ class Submissions extends Component {
 				) : (
 					<div className="page wrapper">
 						<ul className="submissionList">
-							{this.state.submissions.map(submission => (
+							{this.state.submissions.map((submission) => (
 								<li className="submission" key={submission.submissionID}>
 									<div className="submissionContainer">
 										{' '}
@@ -127,7 +113,11 @@ class Submissions extends Component {
 												</Link>
 											</div>
 											<div className="submissionDetails">
-												<img src={submission.thumbnailURL} alt="" />
+												<Link
+													to={`/submissions/${submission.submissionID}/edit`}
+												>
+													<img src={submission.thumbnailURL} alt="" />
+												</Link>
 												<div className="submissionTitle">
 													<p>
 														{moment(
