@@ -24,7 +24,8 @@ class App extends Component {
 		userDetails: { name: '' },
 		photoFile: null,
 		photoBase64: null,
-		selectedSubmission: {}
+		selectedSubmission: {},
+		wifi: false,
 	};
 
 	componentDidMount() {
@@ -35,7 +36,7 @@ class App extends Component {
 	db = firebase.firestore();
 
 	initApp = () => {
-		this.auth.onAuthStateChanged(user => {
+		this.auth.onAuthStateChanged((user) => {
 			if (user) {
 				this.setState({ user: user.uid }, () => {
 					this.getUserDetails();
@@ -49,13 +50,13 @@ class App extends Component {
 			.collection('users')
 			.doc(this.state.user)
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				this.setState({ userDetails: doc.data() });
 			});
 	};
 
 	// PHOTO UPLOAD
-	onPhotoUpload = e => {
+	onPhotoUpload = (e) => {
 		const reader = new FileReader();
 		const file = e.target.files[0];
 
@@ -63,7 +64,7 @@ class App extends Component {
 			this.setState(
 				{
 					photoFile: file,
-					photoBase64: reader.result
+					photoBase64: reader.result,
 				},
 				() => {
 					this.props.history.push('/dashboard/submit');
@@ -72,6 +73,10 @@ class App extends Component {
 		};
 
 		reader.readAsDataURL(file);
+	};
+
+	onWifiToggle = (e) => {
+		this.setState({ wifi: e.target.checked });
 	};
 
 	render() {
@@ -106,6 +111,7 @@ class App extends Component {
 							photoFile={this.state.photoFile}
 							userDetails={this.state.userDetails}
 							onPhotoUpload={this.onPhotoUpload}
+							wifi={this.state.wifi}
 						/>
 					)}
 				/>
@@ -121,7 +127,7 @@ class App extends Component {
 				<Route
 					path="/submissions/:id/edit"
 					exact
-					render={props => (
+					render={(props) => (
 						<Edit {...props} userDetails={this.state.userDetails} />
 					)}
 				/>
@@ -138,7 +144,13 @@ class App extends Component {
 					render={() => <Notifications user={this.state.user} />}
 				/>
 
-				<Route path="/settings" exact component={Settings} />
+				<Route
+					path="/settings"
+					exact
+					render={() => (
+						<Settings wifi={this.state.wifi} onWifiToggle={this.onWifiToggle} />
+					)}
+				/>
 			</div>
 		);
 	}

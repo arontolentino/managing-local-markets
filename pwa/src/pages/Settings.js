@@ -47,7 +47,11 @@ class Settings extends Component {
 								</a>
 
 								<label class="switch">
-									<input type="checkbox" />
+									<input
+										type="checkbox"
+										onChange={(e) => this.props.onWifiToggle(e)}
+										defaultChecked={this.props.wifi}
+									/>
 									<span class="slider round"></span>
 								</label>
 							</li>

@@ -561,12 +561,27 @@ textarea:focus {
 	font-size: 1.5rem;
 	font-weight: 600;
 	border: none;
-	padding: 1.2rem 3.5rem;
+	padding: 1.2rem 2rem;
 	text-transform: uppercase;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	-ms-border-radius: 6px;
 	-o-border-radius: 6px;
+}
+
+.saveBtn {
+	background: #e4e4e4;
+	color: #4a4a4a;
+	border-radius: 6px;
+	font-size: 1.5rem;
+	font-weight: 600;
+	border: none;
+	padding: 1.2rem 2rem;
+	text-transform: uppercase;
+	-webkit-border-radius: ;
+	-moz-border-radius: ;
+	-ms-border-radius: ;
+	-o-border-radius: ;
 }
 
 .cancelBtn {
@@ -788,6 +803,45 @@ input:checked + .slider:before {
 	-webkit-transform: translateX(26px);
 	-ms-transform: translateX(26px);
 	transform: translateX(26px);
+}
+
+.swal-overlay--show-modal .swal-modal {
+	animation: none;
+}
+
+.swal-title {
+	color: #4a4a4a;
+	font-size: 2.2rem;
+}
+
+.swal-button--confirm {
+	background: #ffdf36;
+	color: #4a4a4a;
+	border-radius: 6px;
+	font-size: 1.5rem;
+	font-weight: 600;
+	border: none;
+	padding: 1.2rem 2rem;
+	text-transform: uppercase;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-ms-border-radius: 6px;
+	-o-border-radius: 6px;
+}
+
+.swal-button--cancel {
+	background: #e4e4e4;
+	color: #4a4a4a;
+	border-radius: 6px;
+	font-size: 1.5rem;
+	font-weight: 600;
+	border: none;
+	padding: 1.2rem 2rem;
+	text-transform: uppercase;
+	-webkit-border-radius: ;
+	-moz-border-radius: ;
+	-ms-border-radius: ;
+	-o-border-radius: ;
 }
 
 /* Rounded sliders */
