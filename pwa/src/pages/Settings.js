@@ -24,7 +24,7 @@ class Settings extends Component {
 			.then(() => {
 				this.props.history.push('/');
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error);
 			});
 	};
@@ -42,9 +42,9 @@ class Settings extends Component {
 						</div>
 						<ul className="optionsContainer">
 							<li className="option">
-								<Link to="/submissions" className="optionTitle">
+								<a href="#" className="optionTitle">
 									<h3>Wi-Fi Only</h3>
-								</Link>
+								</a>
 
 								<label class="switch">
 									<input type="checkbox" />
@@ -52,9 +52,9 @@ class Settings extends Component {
 								</label>
 							</li>
 							<li className="option">
-								<Link to="/notifications" className="optionTitle">
+								<a href="#" className="optionTitle">
 									<h3>My Profile</h3>
-								</Link>
+								</a>
 
 								<ArrowIcon />
 							</li>
@@ -67,16 +67,16 @@ class Settings extends Component {
 						</div>
 						<ul className="optionsContainer">
 							<li className="option">
-								<Link to="/submissions" className="optionTitle">
+								<a href="#" className="optionTitle">
 									<h3>About MLM</h3>
-								</Link>
+								</a>
 
 								<ArrowIcon />
 							</li>
 							<li className="option">
-								<Link to="/notifications" className="optionTitle">
+								<a href="#" className="optionTitle">
 									<h3>FAQs</h3>
-								</Link>
+								</a>
 
 								<ArrowIcon />
 							</li>
