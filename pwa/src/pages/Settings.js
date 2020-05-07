@@ -7,6 +7,8 @@ import SecondaryHeader from '../components/SecondaryHeader';
 import Nav from '../components/Nav';
 import ArrowIcon from '../components/icons/ArrowIcon';
 
+import { withRouter } from 'react-router-dom';
+
 import firebase from '../config/firebase';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -98,4 +100,4 @@ class Settings extends Component {
 	}
 }
 
-export default Settings;
+export default withRouter(Settings);

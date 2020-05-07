@@ -96,6 +96,11 @@ class Submissions extends Component {
 														icon={faExclamationCircle}
 														style={{ color: '#D10000' }}
 													/>
+												) : submission.status === 'Rejected' ? (
+													<FontAwesomeIcon
+														icon={faExclamationCircle}
+														style={{ color: '#ffa600' }}
+													/>
 												) : (
 													<FontAwesomeIcon
 														icon={faCheckCircle}

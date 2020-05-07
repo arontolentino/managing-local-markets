@@ -8,11 +8,58 @@ import SubmissionsIcon from '../components/icons/SubmissionsIcon';
 import ArrowIcon from '../components/icons/ArrowIcon';
 
 import Spinner from 'react-spinkit';
+import firebase from '../config/firebase';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFolderOpen, faBell } from '@fortawesome/free-solid-svg-icons';
 import NotificationsIcon from '../components/icons/NotificationsIcon';
 
 class Dashboard extends Component {
+	state = {
+		user: null,
+		notifications: null,
+	};
+
+	componentDidMount() {
+		this.initApp();
+	}
+
+	auth = firebase.auth();
+	db = firebase.firestore();
+
+	initApp = () => {
+		this.auth.onAuthStateChanged((user) => {
+			if (user) {
+				this.setState({ user: user.uid }, () => {
+					this.getSubmissions();
+				});
+			}
+		});
+	};
+
+	getSubmissions = () => {
+		console.log('Get submissions');
+		console.log(this.state.user);
+		this.db
+			.collection('submissions')
+			.where('userID', '==', this.state.user)
+			.where('status', '==', 'Action Required')
+			.orderBy('submissionID', 'desc')
+			.onSnapshot((querySnapshot) => {
+				const submissions = [];
+
+				querySnapshot.forEach(function (doc) {
+					submissions.push(doc.data());
+				});
+
+				if (submissions.length !== 0) {
+					this.setState({
+						notifications: submissions.length,
+					});
+				}
+			});
+	};
+
 	render() {
 		return (
 			<div className="dash">
@@ -38,7 +85,7 @@ class Dashboard extends Component {
 							<input
 								type="file"
 								id="photoUpload"
-								onChange={e => this.props.onPhotoUpload(e)}
+								onChange={(e) => this.props.onPhotoUpload(e)}
 							/>
 						</div>
 
@@ -58,7 +105,13 @@ class Dashboard extends Component {
 										bubbleColor="#006AC3"
 										className="optionLogo"
 									/>
-									<h3>You Have 3 Notifications</h3>
+									<h3>
+										You Have{' '}
+										{this.state.notifications ? this.state.notifications : 0}{' '}
+										{this.state.notifications === 1
+											? 'Notification'
+											: 'Notifications'}
+									</h3>
 								</Link>
 
 								<ArrowIcon />

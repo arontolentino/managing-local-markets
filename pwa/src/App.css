@@ -79,6 +79,7 @@ textarea:focus {
 
 .page {
 	margin: 7rem 0 10rem 0;
+	margin-bottom: max(10rem, calc(env(safe-area-inset-bottom) + 10rem));
 }
 
 .spinner {
@@ -175,6 +176,7 @@ textarea:focus {
 	width: 100%;
 	background: linear-gradient(#0051a5, #006ac3);
 	padding: 1.1rem 0;
+	padding-bottom: max(1.1rem, env(safe-area-inset-bottom));
 	width: 100%;
 	display: block;
 	overflow: auto;
@@ -193,6 +195,7 @@ textarea:focus {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	position: relative;
 	/* width: calc(100vw - 20px); */
 }
 
@@ -807,6 +810,7 @@ input:checked + .slider:before {
 
 .swal-overlay--show-modal .swal-modal {
 	animation: none;
+	vertical-align: text-top;
 }
 
 .swal-title {
@@ -844,6 +848,21 @@ input:checked + .slider:before {
 	-o-border-radius: ;
 }
 
+.notificationCount {
+	position: absolute;
+	top: 0;
+	right: 2.5rem;
+	width: 1.5rem;
+	height: 1.5rem;
+	background: red;
+	border-radius: 50%;
+	text-align: center;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
+}
+
 /* Rounded sliders */
 .slider.round {
 	border-radius: 34px;
@@ -851,6 +870,10 @@ input:checked + .slider:before {
 
 .slider.round:before {
 	border-radius: 50%;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
 }
 
 /*               */

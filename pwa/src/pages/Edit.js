@@ -23,8 +23,8 @@ class Edit extends Component {
 			products: [],
 			regions: [],
 			markets: [],
-			transits: []
-		}
+			transits: [],
+		},
 	};
 
 	componentDidMount() {
@@ -33,7 +33,7 @@ class Edit extends Component {
 		db.collection('submissions')
 			.doc(this.props.match.params.id)
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				console.log('Document data:', doc.data());
 
 				const submission = doc.data();
@@ -44,7 +44,7 @@ class Edit extends Component {
 		db.collection('configurations')
 			.doc('selectOptions')
 			.get()
-			.then(doc => {
+			.then((doc) => {
 				const selectOptions = doc.data();
 
 				this.setState({ selectOptions });
@@ -56,35 +56,42 @@ class Edit extends Component {
 
 		const submission = this.state.submission;
 
-		db.collection('submissions')
-			.doc(this.props.match.params.id)
-			.set({ submission });
+		if (submission.status === 'Action Required') {
+			console.log('Action Required');
+			db.collection('submissions')
+				.doc(this.props.match.params.id)
+				.set({ ...submission, status: 'Awaiting' });
+		} else {
+			db.collection('submissions')
+				.doc(this.props.match.params.id)
+				.set({ submission });
+		}
 	};
 
-	onValueChange = e => {
+	onValueChange = (e) => {
 		this.setState({
 			submission: {
 				...this.state.submission,
-				[e.target.id]: e.target.value
-			}
+				[e.target.id]: e.target.value,
+			},
 		});
 	};
 
-	onPhotoUpload = e => {
+	onPhotoUpload = (e) => {
 		const reader = new FileReader();
 		const file = e.target.files[0];
 
 		reader.onloadend = () => {
 			this.setState({
 				photoFile: file,
-				photoBase64: reader.result
+				photoBase64: reader.result,
 			});
 		};
 
 		reader.readAsDataURL(file);
 	};
 
-	onUpdate = e => {
+	onUpdate = (e) => {
 		e.preventDefault();
 
 		// 1. Set state to uploading to trigger spinner
@@ -94,22 +101,22 @@ class Edit extends Component {
 		if (this.state.photoFile) {
 			const photoFile = this.state.photoFile;
 
-			imageCompression.getExifOrientation(photoFile).then(exif => {
+			imageCompression.getExifOrientation(photoFile).then((exif) => {
 				console.log(exif);
 
 				const thumbnailPhoto = imageCompression(photoFile, {
 					maxSizeMB: 0.1,
 					maxWidthOrHeight: 1024,
-					exifOrientation: exif
+					exifOrientation: exif,
 				});
 
 				const webPhoto = imageCompression(photoFile, {
 					maxSizeMB: 0.5,
 					maxWidthOrHeight: 2048,
-					exifOrientation: exif
+					exifOrientation: exif,
 				});
 
-				Promise.all([thumbnailPhoto, webPhoto]).then(compressedImages => {
+				Promise.all([thumbnailPhoto, webPhoto]).then((compressedImages) => {
 					console.log('First set of promises triggered');
 					console.log(compressedImages);
 
@@ -135,14 +142,14 @@ class Edit extends Component {
 					const uploadWebPhoto = webPhotoRef.put(compressedImages[1]);
 
 					Promise.all([uploadThumbnailPhoto, uploadWebPhoto]).then(
-						snapshots => {
+						(snapshots) => {
 							console.log('Second set of promises triggered');
 
 							// 4. Get photo URLs
 							const thumbnailPhotoURL = thumbnailPhotoRef.getDownloadURL();
 							const webPhotoURL = webPhotoRef.getDownloadURL();
 
-							Promise.all([thumbnailPhotoURL, webPhotoURL]).then(URLs => {
+							Promise.all([thumbnailPhotoURL, webPhotoURL]).then((URLs) => {
 								this.updateSubmission(URLs[0], URLs[1]);
 							});
 						}
@@ -163,25 +170,39 @@ class Edit extends Component {
 			updatedSubmission = {
 				...this.state.submission,
 				photoURL: webPhotoURL,
-				thumbnailURL: thumbnailPhotoURL
+				thumbnailURL: thumbnailPhotoURL,
 			};
 		} else {
 			updatedSubmission = this.state.submission;
 		}
-		console.log(this.state.submission.submissionID);
 
-		db.collection('submissions')
-			.doc(this.state.submission.submissionID.toString())
-			.set(updatedSubmission)
-			.then(() => {
-				console.log('Update submission!');
-				this.props.history.push(
-					`/submissions/${this.state.submission.submissionID}/edit/success`
-				);
-			})
-			.catch(error => {
-				console.log(error);
-			});
+		if (this.state.submission.status === 'Action Required') {
+			db.collection('submissions')
+				.doc(this.state.submission.submissionID.toString())
+				.set({ ...updatedSubmission, status: 'Awaiting', adminComment: null })
+				.then(() => {
+					console.log('Update submission!');
+					this.props.history.push(
+						`/submissions/${this.state.submission.submissionID}/edit/success`
+					);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		} else {
+			db.collection('submissions')
+				.doc(this.state.submission.submissionID.toString())
+				.set(updatedSubmission)
+				.then(() => {
+					console.log('Update submission!');
+					this.props.history.push(
+						`/submissions/${this.state.submission.submissionID}/edit/success`
+					);
+				})
+				.catch((error) => {
+					console.log(error);
+				});
+		}
 	};
 
 	render() {
@@ -213,7 +234,7 @@ class Edit extends Component {
 							<input
 								type="file"
 								id="photoUpload"
-								onChange={e => this.onPhotoUpload(e)}
+								onChange={(e) => this.onPhotoUpload(e)}
 							/>
 
 							<div className="formInput">
@@ -225,13 +246,13 @@ class Edit extends Component {
 									className="select"
 									id="financialInstitution"
 									onChange={this.onValueChange}
-									defaultValue={this.state.submission.financialInstitution}
+									value={this.state.submission.financialInstitution}
 								>
 									<option value="" disabled>
 										Tag Financial Institution
 									</option>
 									{this.state.selectOptions.financialInstitutions.map(
-										option => (
+										(option) => (
 											<option value={option} key={option}>
 												{option}
 											</option>
@@ -248,12 +269,12 @@ class Edit extends Component {
 									className="select"
 									id="product"
 									onChange={this.onValueChange}
-									defaultValue={this.state.submission.product}
+									value={this.state.submission.product}
 								>
 									<option value="" disabled>
 										Tag Product
 									</option>
-									{this.state.selectOptions.products.map(option => (
+									{this.state.selectOptions.products.map((option) => (
 										<option value={option} key={option}>
 											{option}
 										</option>
@@ -268,12 +289,12 @@ class Edit extends Component {
 									className="select"
 									id="medium"
 									onChange={this.onValueChange}
-									defaultValue={this.state.submission.medium}
+									value={this.state.submission.medium}
 								>
 									<option value="" disabled>
 										Tag Medium
 									</option>
-									{this.state.selectOptions.medium.map(option => (
+									{this.state.selectOptions.medium.map((option) => (
 										<option value={option} key={option}>
 											{option}
 										</option>

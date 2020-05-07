@@ -8,12 +8,11 @@ import firebase from '../config/firebase';
 class Register extends Component {
 	state = {
 		user: null,
-		firstName: null,
-		lastName: null,
+		name: null,
 		email: null,
 		password: null,
 		market: null,
-		region: null
+		region: null,
 	};
 
 	// VARIABLES
@@ -21,14 +20,14 @@ class Register extends Component {
 	auth = firebase.auth();
 
 	// INPUT EVENT LISTENER
-	onInputValueChange = e => {
+	onInputValueChange = (e) => {
 		this.setState({
-			[e.target.id]: e.target.value
+			[e.target.id]: e.target.value,
 		});
 	};
 
 	// REGISTER USER
-	onRegister = e => {
+	onRegister = (e) => {
 		e.preventDefault();
 
 		// 1. Check if transit details are available
@@ -36,15 +35,15 @@ class Register extends Component {
 			.collection('banks')
 			.where('transit', '==', parseInt(this.state.transit))
 			.get()
-			.then(querySnapshot => {
+			.then((querySnapshot) => {
 				if (querySnapshot.empty) {
 					console.error('Entered transit number does not exist!!');
 				} else {
-					querySnapshot.forEach(doc => {
+					querySnapshot.forEach((doc) => {
 						this.setState(
 							{
 								market: doc.data().market,
-								region: doc.data().region
+								region: doc.data().region,
 							},
 							() => {
 								this.registerUser();
@@ -59,39 +58,39 @@ class Register extends Component {
 	registerUser = () => {
 		this.auth
 			.createUserWithEmailAndPassword(this.state.email, this.state.password)
-			.then(user => {
+			.then((user) => {
 				this.setState(
 					{
-						user: user.user.uid
+						user: user.user.uid,
 					},
 					() => {
 						this.addUserDetails(user.user.uid);
 					}
 				);
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.log(error);
 			});
 	};
 
 	// 3. Add additional user details after registration
-	addUserDetails = uid => {
+	addUserDetails = (uid) => {
 		this.db
 			.collection('users')
 			.doc(uid)
 			.set({
 				uid: this.state.user,
-				name: this.state.firstName + ' ' + this.state.lastName,
+				name: this.state.name,
 				email: this.state.email,
 				transit: this.state.transit,
 				market: this.state.market,
-				region: this.state.region
+				region: this.state.region,
 			})
 			.then(() => {
 				console.log('Added user details!');
 				this.props.history.push('/dashboard');
 			})
-			.catch(error => {
+			.catch((error) => {
 				console.log(error);
 			});
 	};

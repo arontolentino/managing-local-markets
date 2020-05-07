@@ -1,17 +1,60 @@
 import React, { Component } from 'react';
 
 import { NavLink } from 'react-router-dom';
+import firebase from '../config/firebase';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
 import CameraIcon from './icons/CameraIcon';
 import SubmissionsIcon from './icons/SubmissionsIcon';
 import NotificationsIcon from './icons/NotificationsIcon';
-import MoreIcon from './icons/MoreIcon';
+
 import GearIcon from './icons/GearIcon';
 
 class Nav extends Component {
-	state = {};
+	state = {
+		user: null,
+		notifications: null,
+	};
+
+	componentDidMount() {
+		this.initApp();
+	}
+
+	auth = firebase.auth();
+	db = firebase.firestore();
+
+	initApp = () => {
+		this.auth.onAuthStateChanged((user) => {
+			if (user) {
+				this.setState({ user: user.uid }, () => {
+					this.getSubmissions();
+				});
+			}
+		});
+	};
+
+	getSubmissions = () => {
+		console.log('Get submissions');
+		console.log(this.state.user);
+		this.db
+			.collection('submissions')
+			.where('userID', '==', this.state.user)
+			.where('status', '==', 'Action Required')
+			.orderBy('submissionID', 'desc')
+			.onSnapshot((querySnapshot) => {
+				const submissions = [];
+
+				querySnapshot.forEach(function (doc) {
+					submissions.push(doc.data());
+				});
+
+				if (submissions.length !== 0) {
+					this.setState({
+						notifications: submissions.length,
+					});
+				}
+			});
+	};
+
 	render() {
 		return (
 			<div className="nav">
@@ -39,6 +82,11 @@ class Nav extends Component {
 								className="navItem"
 								activeClassName="navActive"
 							>
+								{this.state.notifications ? (
+									<div className="notificationCount">
+										{this.state.notifications}
+									</div>
+								) : null}
 								<NotificationsIcon
 									className="navIcon"
 									color="#fff"

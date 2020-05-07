@@ -87,75 +87,77 @@ class Submit extends Component {
 			buttons: ['Cancel', 'Submit'],
 		}).then((willSubmit) => {
 			if (willSubmit) {
-				if (this.props.wifi === false) {
+				if (this.props.wifi === true) {
 					swal({
-						title: 'You are not on Wifi, do you still want to submit?',
+						title: 'You are not on WiFi, do you still want to submit?',
 						buttons: ['Save as draft', 'Submit'],
 					}).then((wifiPrompt) => {
-						// 1. Set state to uploading to trigger spinner
-						this.setState({ isUploading: true });
+						if (wifiPrompt === true) {
+							// 1. Set state to uploading to trigger spinner
+							this.setState({ isUploading: true });
 
-						// 2. Compress image to thumbnail size and web size
-						const photoFile = this.props.photoFile;
+							// 2. Compress image to thumbnail size and web size
+							const photoFile = this.props.photoFile;
 
-						imageCompression.getExifOrientation(photoFile).then((exif) => {
-							const thumbnailPhoto = imageCompression(photoFile, {
-								maxSizeMB: 0.1,
-								maxWidthOrHeight: 1024,
-								exifOrientation: exif,
-							});
+							imageCompression.getExifOrientation(photoFile).then((exif) => {
+								const thumbnailPhoto = imageCompression(photoFile, {
+									maxSizeMB: 0.1,
+									maxWidthOrHeight: 1024,
+									exifOrientation: exif,
+								});
 
-							const webPhoto = imageCompression(photoFile, {
-								maxSizeMB: 0.5,
-								maxWidthOrHeight: 2048,
-								exifOrientation: exif,
-							});
+								const webPhoto = imageCompression(photoFile, {
+									maxSizeMB: 0.5,
+									maxWidthOrHeight: 2048,
+									exifOrientation: exif,
+								});
 
-							Promise.all([thumbnailPhoto, webPhoto]).then(
-								(compressedImages) => {
-									// 3. Upload compressed images to Firebase
-									const storage = firebase.storage();
+								Promise.all([thumbnailPhoto, webPhoto]).then(
+									(compressedImages) => {
+										// 3. Upload compressed images to Firebase
+										const storage = firebase.storage();
 
-									const thumbnailPhotoRef = storage
-										.ref('submissions')
-										.child(
-											`${
-												this.props.userDetails.uid
-											}-${this.state.date.getTime()}-thumbnail`
-										);
-
-									const webPhotoRef = storage
-										.ref('submissions')
-										.child(
-											`${
-												this.props.userDetails.uid
-											}-${this.state.date.getTime()}-web`
-										);
-
-									// Upload thumbnail
-									const uploadThumbnailPhoto = thumbnailPhotoRef.put(
-										compressedImages[0]
-									);
-
-									// Upload web photo
-									const uploadWebPhoto = webPhotoRef.put(compressedImages[1]);
-
-									Promise.all([uploadThumbnailPhoto, uploadWebPhoto]).then(
-										(snapshots) => {
-											// 4. Get photo URLs
-											const thumbnailPhotoURL = thumbnailPhotoRef.getDownloadURL();
-											const webPhotoURL = webPhotoRef.getDownloadURL();
-
-											Promise.all([thumbnailPhotoURL, webPhotoURL]).then(
-												(URLs) => {
-													this.addSubmission(URLs[0], URLs[1]);
-												}
+										const thumbnailPhotoRef = storage
+											.ref('submissions')
+											.child(
+												`${
+													this.props.userDetails.uid
+												}-${this.state.date.getTime()}-thumbnail`
 											);
-										}
-									);
-								}
-							);
-						});
+
+										const webPhotoRef = storage
+											.ref('submissions')
+											.child(
+												`${
+													this.props.userDetails.uid
+												}-${this.state.date.getTime()}-web`
+											);
+
+										// Upload thumbnail
+										const uploadThumbnailPhoto = thumbnailPhotoRef.put(
+											compressedImages[0]
+										);
+
+										// Upload web photo
+										const uploadWebPhoto = webPhotoRef.put(compressedImages[1]);
+
+										Promise.all([uploadThumbnailPhoto, uploadWebPhoto]).then(
+											(snapshots) => {
+												// 4. Get photo URLs
+												const thumbnailPhotoURL = thumbnailPhotoRef.getDownloadURL();
+												const webPhotoURL = webPhotoRef.getDownloadURL();
+
+												Promise.all([thumbnailPhotoURL, webPhotoURL]).then(
+													(URLs) => {
+														this.addSubmission(URLs[0], URLs[1]);
+													}
+												);
+											}
+										);
+									}
+								);
+							});
+						}
 					});
 				} else {
 					// 1. Set state to uploading to trigger spinner
@@ -301,13 +303,13 @@ class Submit extends Component {
 									<option value="" disabled selected>
 										Select Financial Institution
 									</option>
-									{this.state.selectOptions.financialInstitutions.map(
-										(option) => (
+									{this.state.selectOptions.financialInstitutions
+										.sort()
+										.map((option) => (
 											<option value={option} key={option}>
 												{option}
 											</option>
-										)
-									)}
+										))}
 								</select>
 							</div>
 

@@ -75,6 +75,7 @@ class Table extends Component {
 					sortCaret: (order, column) => {
 						return <FontAwesomeIcon icon={faSort} className="sort" />;
 					},
+					headerStyle: { minWidth: '100px' },
 				},
 				{
 					dataField: 'market',
@@ -206,7 +207,7 @@ class Table extends Component {
 				'Added admin note and set submission status to "Action Required".';
 		} else {
 			status = 'Awaiting';
-			toast = `Successfully updated the ad #${this.state.selectedSubmission.submissionID}.`;
+			toast = `Successfully updated the ad ${this.state.selectedSubmission.submissionID}.`;
 		}
 
 		db.collection('submissions')
@@ -217,6 +218,24 @@ class Table extends Component {
 			})
 			.then(() => {
 				this.props.triggerToast(toast);
+			});
+	};
+
+	onRejectAd = (e) => {
+		e.preventDefault();
+
+		const db = firebase.firestore();
+
+		db.collection('submissions')
+			.doc(this.state.selectedSubmission.submissionID.toString())
+			.set({
+				...this.state.selectedSubmission,
+				status: 'Rejected',
+			})
+			.then(() => {
+				this.props.triggerToast(
+					`Successfully rejected the ad #${this.state.selectedSubmission.submissionID}.`
+				);
 			});
 	};
 
@@ -346,6 +365,8 @@ class Table extends Component {
 			return <p style={{ color: '#D10000', fontWeight: '600' }}>{cell}</p>;
 		} else if (cell === 'Approved') {
 			return <p style={{ color: '#00A70D', fontWeight: '600' }}>{cell}</p>;
+		} else if (cell === 'Rejected') {
+			return <p style={{ color: '#ffa600', fontWeight: '600' }}>{cell}</p>;
 		} else {
 			return <p>{cell}</p>;
 		}
@@ -566,6 +587,9 @@ class Table extends Component {
 								<div className="expandBtns">
 									<button className="updateBtn" onClick={this.onUpdateAd}>
 										Update Ad
+									</button>
+									<button className="rejectBtn" onClick={this.onRejectAd}>
+										Reject Ad
 									</button>
 									<button className="approveBtn" onClick={this.onApproveAd}>
 										Approve Ad
